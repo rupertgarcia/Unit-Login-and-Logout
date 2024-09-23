@@ -6,6 +6,32 @@
     <title>Unit Log In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Highlight the selected row with pale green */
+        .selected {
+            background-color: #d1e7dd; /* Pale green background */
+        }
+
+        /* Disabled state for the Log Out button */
+        .btn.disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        .btn.disabled:hover {
+            background-color: gray; /* Prevent hover effect when disabled */
+        }
+
+        /* Active state for the Log Out button */
+        .btn.enabled {
+            background-color: rgb(60,148,84); /* Green */
+            cursor: pointer;
+        }
+
+        .btn.enabled:hover {
+            background-color: #07001f; /* Darker green on hover */
+        }
+    </style>
 </head>
 <body>
     <div class="container-wrapper">
@@ -109,45 +135,92 @@
         <div class="right-panel">
             <h2>Currently Logged In Units</h2>
             <div class="table-container">
-            <table id="unitLogOutTable">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Asset Tag</th>
-                        <th>Brand Unit</th>
-                        <th>Date Logged In</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Include the connection file and query for entries where is_logged_out = 0
-                    include 'connect.php';
-                    
-                    $result = $conn->query("SELECT requestor_name, asset_tag_number, brand_unit, date_logged_in FROM UnitLogInForm WHERE is_logged_out = 0");
+                <table id="unitLogOutTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Asset Tag</th>
+                            <th>Brand Unit</th>
+                            <th>Date Logged In</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Include the connection file and query for entries where is_logged_out = 0
+                        include 'connect.php';
 
-                    if ($result->num_rows > 0) {
-                        // Output data for each row
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
-                            echo "<td>" . htmlspecialchars(date("m/d/Y", strtotime($row['date_logged_in']))) . "</td>";
-                            echo "</tr>";
+                        $result = $conn->query("SELECT id, requestor_name, asset_tag_number, brand_unit, date_logged_in FROM UnitLogInForm WHERE is_logged_out = 0");
+
+                        if ($result->num_rows > 0) {
+                            // Output data for each row
+                            while($row = $result->fetch_assoc()) {
+                                echo "<tr data-id='" . $row['id'] . "'>";
+                                echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
+                                echo "<td>" . htmlspecialchars(date("m/d/Y", strtotime($row['date_logged_in']))) . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4'>No borrowed units</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='4'>No borrowed units</td></tr>";
-                    }
-                    
-                    // Close the connection
-                    $conn->close();
-                    ?>
-                </tbody>
-            </table>
+
+                        // Close the connection
+                        $conn->close();
+                        ?>
+                    </tbody>
+                </table>
             </div>
+            <button id="logoutBtn" class="btn disabled" disabled>Log Out</button> <!-- Disabled Log Out button -->
         </div>
     </div>
 
     <img src="img/emsgroup.png" alt="EMS Logo" class="bottom-right-image">
+
+    <script>
+        // Selectable row logic
+        const rows = document.querySelectorAll("#unitLogOutTable tbody tr");
+        let selectedRow = null;
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        rows.forEach(row => {
+            row.addEventListener("click", function() {
+                // Remove highlight from previous selection
+                if (selectedRow) {
+                    selectedRow.classList.remove("selected");
+                }
+
+                // Select the current row
+                selectedRow = row;
+                row.classList.add("selected");
+
+                // Enable the Log Out button by removing disabled styles and adding enabled styles
+                logoutBtn.disabled = false;
+                logoutBtn.classList.remove("disabled");
+                logoutBtn.classList.add("enabled");
+            });
+        });
+
+        // Log Out button click handler
+        logoutBtn.addEventListener("click", function() {
+            if (selectedRow) {
+                const id = selectedRow.getAttribute("data-id");
+
+                // Send AJAX request to log out the selected unit
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "logout.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Refresh the page after logout
+                        window.location.reload();
+                    } else {
+                        alert("Error logging out unit");
+                    }
+                };
+                xhr.send("id=" + id);
+            }
+        });
+    </script>
 </body>
 </html>
