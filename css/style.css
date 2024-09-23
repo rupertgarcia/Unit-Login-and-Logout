@@ -1,0 +1,197 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica", sans-serif; /* Changed to Helvetica */
+}
+
+body{
+    background-color: #c9ffdc;
+}
+.container{
+    background:#fff;
+    width: 450px;
+    padding: 1.5rem;
+    margin: 50px auto;
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgba(0,0,1,0.9);
+}
+form{
+    margin: 0 2rem;
+}
+.form-title{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1.3rem;
+    margin-bottom: 0.4rem;
+}
+input{
+    color: inherit;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #757575;
+    padding-left: 1.5rem;
+    font-size: 15px;
+}
+.input-group{
+    margin-bottom: 10px; /* Increase space between input boxes */
+}
+.input-group i{
+    position: absolute;
+    color: black;
+}
+input:focus{
+    background-color: transparent;
+    outline: transparent;
+    border-bottom: 2px solid hsl(327, 90%, 28%);
+}
+input::placeholder{
+    color: transparent;
+}
+label{
+    color: #757575;
+    position: relative;
+    left: 1.7rem;
+    top: -1.3rem;
+    cursor: auto;
+    transition: 0.3s ease all;
+}
+input:focus~label,input:not(:placeholder-shown)~label{
+    top: -3em;
+    color:rgb(12,124,44);
+    font-size: 15px;
+}
+.recover{
+    text-align: right;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+.recover a{
+    text-decoration: none;
+    color:rgb(60,148,84);
+}
+.recover a:hover{
+    color: green;
+    text-decoration: underline;
+}
+.btn{
+    font-size:1.1rem;
+    padding: 8px 0;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    width: 100%;
+    background: rgb(60,148,84);
+    color: white;
+    cursor: pointer;
+    transition: 0.9s;
+}
+.btn:hover{
+    background: #07001f;
+}
+.input-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-row .input-group {
+    width: 48%; /* Adjust width so both fields fit side by side */
+}
+
+/* Optional: Ensure proper behavior on smaller screens */
+@media (max-width: 600px) {
+    .input-row {
+        flex-direction: column; /* Stack inputs on small screens */
+    }
+
+    .input-row .input-group {
+        width: 100%; /* Full width when stacked */
+    }
+}
+
+.input-group-purpose {
+    position: relative; /* Make the input group relative */
+    padding: 1% 0; /* Add padding if needed */
+}
+
+.input-group-purpose i {
+    position: relative;
+    color: black; /* Icon color */
+    margin-bottom: 5px; /* Space between icon and label */
+    display: block; /* Ensure the icon is on a new line */
+}
+
+.input-group-purpose label {
+    position: relative;
+    display: block; /* Ensure the label is on a new line */
+    color: #757575; /* Default label color */
+    margin-bottom: -15px; /* Space between label and textarea */
+}
+
+/* Textarea styles */
+textarea {
+    width: 100%; /* Full width */
+    height: 100px; /* Set height */
+    padding: 10px; /* Padding inside the textarea */
+    border: 1px solid #757575; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 15px; /* Font size */
+    color: inherit; /* Inherit text color from parent */
+    background-color: transparent; /* Background color */
+    resize: none; /* Disable resizing */
+    outline: none; /* Remove outline */
+}
+
+/* Remove hover effect styles */
+textarea:focus {
+    border: 1px solid #757575; /* Keep border color on focus */
+}
+
+.radio-row {
+    display: flex; /* Use flexbox for horizontal alignment */
+    justify-content: center; /* Center the entire radio button row */
+    align-items: center; /* Align items vertically */
+    padding: 10px 0; /* Padding for spacing */
+    margin-left: -120px; /* Adjust this value based on how much left you want to move the radio buttons */
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
+.radio-row label {
+    display: flex;
+    align-items: center;
+    margin-left: 30px; /* Add this margin to align with other labels that have icons */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease; /* Smooth transition for label color change */
+}
+
+.radio-row input[type="radio"] {
+    margin-right: 8px; /* Space between radio button and label text */
+    accent-color: #004d00; /* Dark green color for the radio button */
+}
+
+/* Change the label color when the radio button is selected */
+.radio-row input[type="radio"]:checked + label {
+    color: #0c7c34; /* Change label color to #0c7c34 when the option is selected */
+}
+
+/* Ensure consistent spacing for input groups */
+.input-group {
+    padding: 1% 0; /* Ensure padding is consistent */
+}
+
+/* Add margin to the input group for the Purpose textarea */
+.input-group-purpose {
+    margin-top: 10px; /* Adjust this value for consistent spacing */
+}
+.bottom-right-image {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 150px; /* 1.5x bigger */
+    height: auto; /* Keep the aspect ratio */
+    z-index: 100; /* Make sure it's above other elements */
+}
