@@ -39,6 +39,39 @@ if (isset($_POST['submit'])) {
     $stmt->close();
 }
 
+// Query to display current borrowed units (with is_logged_out = 0)
+$sql = "SELECT requestor_name, asset_tag_number, brand_unit, date_logged_in 
+        FROM UnitLogInForm 
+        WHERE is_logged_out = 0 
+        ORDER BY date_logged_in DESC"; // Sorting by latest date
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    echo "<table>";
+    echo "<thead>
+            <tr>
+                <th>Name</th>
+                <th>Asset Tag</th>
+                <th>Brand Unit</th>
+                <th>Date Logged In</th>
+            </tr>
+          </thead>";
+    echo "<tbody>";
+    while($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
+        echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody>";
+    echo "</table>";
+} else {
+    echo "No borrowed units currently.";
+}
+
 // Close the connection
 $conn->close();
 

@@ -12,7 +12,7 @@ body{
     background:#fff;
     width: 450px;
     padding: 1.5rem;
-    margin: 50px auto;
+    margin: 0px auto;
     border-radius: 10px;
     box-shadow: 0 20px 35px rgba(0,0,1,0.9);
 }
@@ -194,4 +194,94 @@ textarea:focus {
     width: 150px; /* 1.5x bigger */
     height: auto; /* Keep the aspect ratio */
     z-index: 100; /* Make sure it's above other elements */
+}
+
+/* Styling for the container holding both the form and the new right panel */
+.container-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align form and table at the top */
+    margin: 50px auto; /* Center horizontally with margin */
+    max-width: 1200px; /* Set a max width for the container */
+}
+
+/* Adjust the form container to take a portion of the width and let it have natural height */
+.container {
+    background: #fff;
+    width: 55%; /* Adjust width to fit next to the table */
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgba(0,0,1,0.9);
+    /* Remove fixed height */
+    overflow: hidden; /* Prevent any overflow from expanding the form */
+}
+
+/* Ensure the right panel takes height relative to the form */
+.right-panel {
+    width: 40%; /* Adjust width to fit next to the form */
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 20px; /* Add space between the form and the table */
+    max-height: 100%; /* Allow height adjustment */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the title is stationary and the table container scrolls */
+.right-panel h2 {
+    text-align: center;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+/* Scrollable container for the table body */
+.right-panel .table-container {
+    flex: 1;
+    max-height: 500px; /* You can adjust this if needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Table styling */
+.right-panel table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.right-panel table th, .right-panel table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    word-wrap: break-word; /* Ensure text wraps properly */
+    white-space: normal; /* Allow wrapping of text in case of long content */
+}
+
+.right-panel table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Make sure the header stays on top */
+}
+
+.right-panel table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Optional: Ensure proper behavior on smaller screens */
+@media (max-width: 900px) {
+    .container-wrapper {
+        flex-direction: column; /* Stack the form and table on small screens */
+    }
+
+    .right-panel {
+        width: 100%; /* Make the table panel full width on smaller screens */
+        margin-left: 0; /* Remove margin */
+        max-height: none; /* Allow it to expand vertically on small screens */
+    }
+
+    .container {
+        width: 100%; /* Make the form full width on smaller screens */
+        height: auto; /* Allow the form to adjust height on smaller screens */
+    }
 }
