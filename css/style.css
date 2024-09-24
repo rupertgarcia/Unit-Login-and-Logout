@@ -1,11 +1,11 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Helvetica", sans-serif;
 }
 
-body{
+body {
     background-color: #c9ffdc;
 }
 
@@ -13,9 +13,10 @@ body{
 .container-wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align the form and table to the top */
+    align-items: flex-start; /* Aligns both containers at the top */
     margin: 50px auto; /* Center the entire section horizontally */
     max-width: 1200px; /* Set a max width for the entire form and table container */
+    height: auto; /* Flexible height to ensure form and table can adjust */
 }
 
 /* Adjust the form (left) container */
@@ -24,84 +25,110 @@ body{
     background: #fff;
     padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 20px 35px rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column; /* Ensure the form elements stack vertically */
+    height: auto; /* Ensure the form remains flexible in height */
 }
 
-form{
-    margin: 0 2rem;
-}
-.form-title{
+.form-title {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    padding: 1.3rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 1rem;
 }
-input{
+
+.input-group {
+    position: relative; /* Position for icon alignment */
+    margin-bottom: 10px;
+}
+
+.input-group input {
     color: inherit;
     width: 100%;
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #757575;
-    padding-left: 1.5rem;
+    padding-left: 2.5rem; /* Space for the icon */
     font-size: 15px;
 }
-.input-group{
-    margin-bottom: 10px;
-}
-.input-group i{
+
+.input-group i {
     position: absolute;
+    left: 10px; /* Icon position */
+    top: 50%;
+    transform: translateY(-50%); /* Center the icon vertically */
     color: black;
 }
-input:focus{
-    background-color: transparent;
-    outline: transparent;
-    border-bottom: 2px solid hsl(131, 100%, 13%);
+
+.form-group {
+    position: relative; /* Position for icon alignment */
+    
 }
-input::placeholder{
-    color: transparent;
+
+.input-radio {
+    margin-top: 1rem;
+} 
+
+/* General icon styling for all form groups */
+.form-group i {
+    position: absolute;
+    left: 10px; /* Icon position */
+    top: 20px;  /* Adjusted for alignment */
+    color: black;
 }
-label{
-    color: #757575;
-    position: relative;
-    left: 1.7rem;
-    top: -1.3rem;
-    cursor: auto;
-    transition: 0.3s ease all;
+
+/* Specific styling for the icon inside the 'Purpose' form group */
+#purposeGroup i {
+    left: 15px; /* New position for the purpose icon */
+    top: 5px;   /* New top position for the purpose icon */
 }
-input:focus~label,input:not(:placeholder-shown)~label{
-    top: -3em;
-    color:rgb(12,124,44);
+
+
+.form-group i {
+    position: absolute;
+    left: 10px; /* Icon position */
+    top: 20px; /* Adjusted for alignment */
+    color: black;
+}
+
+.form-group label {
+    display: block;
+    margin-left: 40px; /* Space to align with the icon */
+    margin-top: 10px; /* Space between icon and label */
+    margin-bottom: 5px; /* Space between label and textarea */
+    color: black; /* Label color */
+    font-weight: bold; /* Make the label bold */
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding-left: 40px; /* Space for the icon */
+    border: 1px solid #757575;
+    border-radius: 5px;
     font-size: 15px;
+    color: inherit;
+    background-color: transparent;
+    resize: none;
+    outline: none;
 }
-.recover{
-    text-align: right;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-.recover a{
-    text-decoration: none;
-    color:rgb(60,148,84);
-}
-.recover a:hover{
-    color: green;
-    text-decoration: underline;
-}
-.btn{
-    font-size:1.1rem;
+
+.btn {
+    font-size: 1.1rem;
     padding: 8px 0;
     border-radius: 5px;
-    outline: none;
-    border: none;
     width: 100%;
-    background: rgb(60,148,84);
+    background: rgb(60, 148, 84);
     color: white;
     cursor: pointer;
-    transition: 0.9s;
+    transition: 0.3s;
 }
-.btn:hover{
+
+.btn:hover {
     background: #07001f;
 }
+
+/* Responsive adjustments */
 .input-row {
     display: flex;
     justify-content: space-between;
@@ -121,77 +148,93 @@ input:focus~label,input:not(:placeholder-shown)~label{
     }
 }
 
-.input-group-purpose {
-    position: relative;
-    padding: 1% 0;
+/* Adjust the right panel */
+.right-panel {
+    width: 40%;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 70vh; /* Limit the panel height to the viewport */
 }
 
-.input-group-purpose i {
-    position: relative;
-    color: black;
-    margin-bottom: 5px;
-    display: block;
-}
 
-.input-group-purpose label {
-    position: relative;
-    display: block;
-    color: #757575;
-    margin-bottom: -15px;
-}
-
-textarea {
-    width: 100%;
-    height: 100px;
+/* Header for the table */
+.right-panel h2 {
+    text-align: center;
     padding: 10px;
-    border: 1px solid #757575;
-    border-radius: 5px;
-    font-size: 15px;
-    color: inherit;
-    background-color: transparent;
-    resize: none;
-    outline: none;
+    margin: 0;
+    background-color: #024e16; /* Use a greenish background */
+    color: white; /* White text */
+    font-size: 1.5rem; /* Slightly larger font size */
+    border-radius: 8px 8px 0 0; /* Rounded top corners to match the panel */
 }
 
-textarea:focus {
-    border: 1px solid #757575;
+/* Table container with scrolling */
+.table-container {
+    flex: 1; /* Allow the table to take up the remaining height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 100%; /* Ensure the table container respects the right-panel height */
 }
 
-.radio-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-    margin-left: -120px;
-    margin-top: 5px;
-    margin-bottom: -5px;
+/* Table styles */
+.right-panel table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.radio-row label {
-    display: flex;
-    align-items: center;
-    margin-left: 30px;
+/* Fix the sticky header */
+.right-panel table th, .right-panel table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.right-panel table th {
+    background-color: #3c9454; /* Match the header background color */
+    color: white; /* White text */
+    font-weight: bold;
+    position: sticky; /* Sticky header */
+    top: 0; /* Stick the header at the top */
+    z-index: 2; /* Ensure header stays on top when scrolling */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Add shadow for a clean division */
+}
+
+/* Adjust row hover effect */
+.right-panel table tr:hover {
+    background-color: #e6f5eb; /* Light green hover effect */
+}
+
+/* Highlight the selected row with pale green */
+.right-panel table tr.selected {
+    background-color: #d1e7dd !important; /* Pale green background for selected row */
+}
+
+/* Style for the Log Out button */
+#logoutBtn {
+    font-size: 1.1rem;
+    padding: 8px 0;
+    border: none;
+    width: 100%;
+    background: rgb(220, 53, 69); /* Red color complementary to green */
     cursor: pointer;
-    font-size: 1rem;
-    transition: color 0.3s ease;
+    transition: 0.3s;
+    border-radius: 0 0 9px 9px; /* Top corners sharp, bottom corners curved */
+    margin-top: auto; /* Push the button to the bottom */
 }
 
-.radio-row input[type="radio"] {
-    margin-right: 8px;
-    accent-color: #004d00;
+
+.btn.disabled {
+    background-color: gray; /* Gray background when disabled */
+    cursor: not-allowed; /* Not allowed cursor */
 }
 
-.radio-row input[type="radio"]:checked + label {
-    color: #0c7c34;
+.btn.enabled {
+    background-color: rgb(220, 53, 69); /* Red background when enabled */
 }
 
-.input-group {
-    padding: 1% 0;
-}
-
-.input-group-purpose {
-    margin-top: 10px;
-}
 .bottom-right-image {
     position: fixed;
     bottom: 10px;
@@ -201,120 +244,50 @@ textarea:focus {
     z-index: 100;
 }
 
-/* Adjust the table (right panel) container */
-.right-panel {
-    width: 40%; /* Adjust width to occupy 40% of the space */
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-left: 20px; /* Add some space between the form and table */
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - 20%); /* Make it shorter than the form by 20% */
-}
-
-
-
-/* Styling the h2 inside the right panel */
-.right-panel h2 {
-    text-align: center;
-    padding-top: 10px; /* Add padding to the top */
-    padding-bottom: 10px;
-    margin: 0;
-    background-color: #024e16; /* Use a greenish background */
-    color: white; /* White text */
-    font-size: 1.5rem; /* Slightly larger font size */
-    border-radius: 8px 8px 0 0; /* Rounded top corners to match the panel */
-    z-index: 2; /* Keep the title on top */
-}
-
-.table-container {
-    overflow-y: auto;
-    flex: 1;
-    position: relative;
-    max-height: calc(100vh - 220px); /* Set a max height for the table container */
-}
-
-.right-panel table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.right-panel table th, .right-panel table td {
-    padding: 10px;
-    text-align: left;
-    word-wrap: break-word; /* Ensure text wraps properly */
-    white-space: normal; /* Allow text wrapping */
-}
-
-/* Styling for the thead inside the table */
-.right-panel table th {
-    background-color: #3c9454; /* Match the header background color */
-    color: white; /* White text */
-    font-weight: bold; /* Bold text */
-    font-size: 1.2rem; /* Larger font size */
-    padding: 12px 10px; /* Add some padding for better readability */
-    position: sticky; /* Sticky header when scrolling */
-    top: 0;
-    z-index: 1; /* Make sure the header stays on top when scrolling */
-    text-align: left;
-    border-bottom: 2px solid #fff; /* Add a border under the header */
-}
-
-/* Style for table rows */
-.right-panel table td {
-    border-bottom: 1px solid #ddd; /* Light border between rows */
-    padding: 12px; /* Padding inside table cells */
-}
-
-/* Hover effect for table rows */
-.right-panel table tr:hover {
-    background-color: #e6f5eb; /* Light green hover effect */
-}
-
-/* Default background for all rows */
-.right-panel table tr {
-    background-color: #f0f0f0; /* Light gray for all rows */
-}
-
-/* Highlight the selected row with pale green */
-.right-panel table tr.selected {
-    background-color: #d1e7dd !important; /* Pale green background for selected row */
-}
-
-/* Scrollbar styling (remove rounded corners, solid style) */
-.table-container::-webkit-scrollbar {
-    width: 12px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background-color: rgba(60, 148, 84, 1); /* Solid green color */
-    border-radius: 0; /* Remove rounded corners */
-}
-
-.table-container::-webkit-scrollbar-track {
-    background-color: #e0e0e0; /* Light gray scrollbar track */
-    border-radius: 0; /* Remove rounded corners */
-}
-
-/* Styling for the Log Out button (red color) with top solid and bottom curved corners */
-#logoutBtn {
-    font-size: 1.1rem;
-    padding: 8px 0;
+/* Hide the default radio button */
+.input-radio input[type="radio"] {
+    appearance: none; /* Remove default radio styling */
+    -webkit-appearance: none; /* For Safari/WebKit */
+    -moz-appearance: none; /* For Firefox */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #024e16; /* Dark green border */
+    border-radius: 50%; /* Make it round */
     outline: none;
-    border: none;
-    width: 100%;
-    background: rgb(220, 53, 69); /* Red color complementary to green */
     cursor: pointer;
-    transition: 0.9s;
-    border-radius: 0 0 10px 10px; /* Top corners sharp, bottom corners curved */
+    transition: 0.2s;
+    margin-right: 10px; /* Space between the radio button and the label */
 }
 
-.btn.disabled {
-    background-color: gray; /* Gray background when disabled */
-    cursor: not-allowed; /* Not allowed cursor */
+/* Custom radio button checked state */
+.input-radio input[type="radio"]:checked {
+    background-color: #024e16; /* Dark green background when checked */
+    border-color: #024e16; /* Dark green border */
 }
 
-.btn.enabled {
-    background-color: rgb(220, 53, 69); /* Red background when enabled */
+/* Add a dot for the checked state */
+.input-radio input[type="radio"]:checked::before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: white; /* White dot */
+    border-radius: 50%;
+    margin: auto;
+    position: relative;
+    top: 4px;
+}
+
+/* Focus state to highlight the radio button when focused */
+.input-radio input[type="radio"]:focus {
+    box-shadow: 0 0 3px 2px rgba(2, 78, 22, 0.6); /* Add dark green shadow when focused */
+}
+
+/* Manually control the position of the label */
+.input-radio label {
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    top: 2px; /* Move the label up or down manually */
+    margin-left: 15px; /* Space between the label and the radio button */
 }

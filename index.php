@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Log In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
     <div class="container-wrapper">
@@ -15,71 +15,64 @@
 
             <form id="unitLogInForm" method="post" action="login.php">
                 <!-- NAME OF REQUESTOR -->
-                <div class="input-group">
+                <div class="form-group input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" name="requestorName" id="requestorName" placeholder=" Name of Requestor" required>
-                    <label for="requestorName">Name of Requestor</label>
+                    <input type="text" class="form-control" name="requestorName" id="requestorName" placeholder="Name of Requestor" required>
                 </div>
 
                 <!-- ID # AND LOCAL # -->
-                <div class="input-row">
-                    <div class="input-group">
+                <div class="form-row">
+                    <div class="form-group input-group col-md-6">
                         <i class="fas fa-id-card"></i>
-                        <input type="text" name="idNumber" id="idNumber" placeholder="ID Number" required pattern="^[1-9]\d*$" title="Please enter a valid positive integer" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                        <label for="idNumber">ID Number</label>
+                        <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="ID Number" required pattern="^[1-9]\d*$" title="Please enter a valid positive integer" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                     </div>
 
-                    <div class="input-group">
+                    <div class="form-group input-group col-md-6">
                         <i class="fas fa-phone"></i>
-                        <input type="text" name="localNumber" id="localNumber" placeholder="Local Number (e.g. 09123456789)" required 
+                        <input type="text" class="form-control" name="localNumber" id="localNumber" placeholder="Local Number (e.g. 09123456789)" required 
                             pattern="^09\d{9}$" title="Please enter a valid mobile phone number (e.g. 09123456789)">
-                        <label for="localNumber">Local Number</label>
                     </div>
                 </div>
 
                 <!-- EMAIL ADDRESS -->
-                <div class="input-group">
+                <div class="form-group input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" name="email" id="email" placeholder=" Email Address" required>
-                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
                 </div>
 
                 <!-- ASSET TAG # -->
-                <div class="input-group">
+                <div class="form-group input-group">
                     <i class="fas fa-tag"></i>
-                    <input type="text" name="assetTag" id="assetTag" placeholder="Asset Tag Number" required>
-                    <label for="assetTag">Asset Tag Number</label>
+                    <input type="text" class="form-control" name="assetTag" id="assetTag" placeholder="Asset Tag Number" required>
                 </div>
 
                 <!-- BRAND OF UNIT -->
-                <div class="input-group">
+                <div class="form-group input-group">
                     <i class="fas fa-laptop"></i>
-                    <input type="text" name="brandUnit" id="brandUnit" placeholder="Brand of Unit" required>
-                    <label for="brandUnit">Brand of Unit</label>
+                    <input type="text" class="form-control" name="brandUnit" id="brandUnit" placeholder="Brand of Unit" required>
                 </div>
 
                 <!-- W/ OR W/OUT CHARGER -->
-                <div class="input-group">
-                    <div class="radio-row">
-                        <label>
-                            <input type="radio" id="withCharger" name="charger" value="With Charger" required>
-                            WITH CHARGER
-                        </label>
-                        <label>
-                            <input type="radio" id="withoutCharger" name="charger" value="Without Charger" required>
-                            WITHOUT CHARGER
-                        </label>
+                <div class="form-group input-radio">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="withCharger" name="charger" value="With Charger" required>
+                        <label class="form-check-label" for="withCharger">WITH CHARGER</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="withoutCharger" name="charger" value="Without Charger" required>
+                        <label class="form-check-label" for="withoutCharger">WITHOUT CHARGER</label>
                     </div>
                 </div>
 
                 <!-- PURPOSE -->
-                <div class="input-group-purpose">
-                    <i class="fas fa-edit"></i>
-                    <label for="purposeUnit">Purpose of Borrowing Unit</label>
-                    <textarea name="purposeUnit" id="purposeUnit" maxlength="500" required></textarea>
+                <div class="form-group" id="purposeGroup">
+                    <i class="fas fa-edit" id="purposeIcon"></i>
+                    <label for="purposeUnit">Purpose</label>
+                    <textarea class="form-control" name="purposeUnit" id="purposeUnit" placeholder="Purpose of Borrowing Unit" maxlength="500" required></textarea>
                 </div>
+
                 
-                <input type="submit" class="btn" value="Submit" name="submit">
+                <input type="submit" class="btn btn-primary" value="Submit" name="submit">
             </form>
         </div>
 
@@ -87,13 +80,13 @@
         <div class="right-panel">
             <h2>Currently Logged In Units</h2>
             <div class="table-container">
-                <table id="unitLogOutTable">
+                <table id="unitLogOutTable" class="table">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Asset Tag</th>
                             <th>Brand Unit</th>
-                            <th>Date Logged In</th>
+                            <th>Logged In</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,11 +116,15 @@
                     </tbody>
                 </table>
             </div>
-            <button id="logoutBtn" class="btn disabled" disabled>Log Out</button> <!-- Disabled Log Out button -->
+            <button id="logoutBtn" class="btn btn-danger disabled" disabled>Log Out</button> <!-- Disabled Log Out button -->
         </div>
     </div>
 
     <img src="img/emsgroup.png" alt="EMS Logo" class="bottom-right-image">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script> <!-- Popper.js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
 
     <script>
     // Selectable row logic
@@ -188,7 +185,6 @@
             xhr.send("id=" + id);
         }
     });
-</script>
-
+    </script>
 </body>
 </html>
