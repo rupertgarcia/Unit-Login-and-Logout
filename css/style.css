@@ -223,8 +223,7 @@ textarea:focus {
     margin: 0;
     background-color: #024e16; /* Use a greenish background */
     color: white; /* White text */
-    font-size: 1.6rem; /* Slightly larger font size */
-    font-weight: bold;
+    font-size: 1.5rem; /* Slightly larger font size */
     border-radius: 8px 8px 0 0; /* Rounded top corners to match the panel */
     z-index: 2; /* Keep the title on top */
 }
@@ -283,31 +282,39 @@ textarea:focus {
     background-color: #d1e7dd !important; /* Pale green background for selected row */
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling (remove rounded corners, solid style) */
 .table-container::-webkit-scrollbar {
     width: 12px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
-    background-color: rgba(60, 148, 84, 0.8); /* Matching scrollbar with greenish color */
-    border-radius: 6px;
+    background-color: rgba(60, 148, 84, 1); /* Solid green color */
+    border-radius: 0; /* Remove rounded corners */
 }
 
 .table-container::-webkit-scrollbar-track {
     background-color: #e0e0e0; /* Light gray scrollbar track */
+    border-radius: 0; /* Remove rounded corners */
 }
 
-/* Button styles */
+/* Styling for the Log Out button (red color) with top solid and bottom curved corners */
+#logoutBtn {
+    font-size: 1.1rem;
+    padding: 8px 0;
+    outline: none;
+    border: none;
+    width: 100%;
+    background: rgb(220, 53, 69); /* Red color complementary to green */
+    cursor: pointer;
+    transition: 0.9s;
+    border-radius: 0 0 10px 10px; /* Top corners sharp, bottom corners curved */
+}
+
 .btn.disabled {
-    background-color: gray;
-    cursor: not-allowed;
+    background-color: gray; /* Gray background when disabled */
+    cursor: not-allowed; /* Not allowed cursor */
 }
 
 .btn.enabled {
-    background-color: rgb(60,148,84);
-    cursor: pointer;
-}
-
-.btn.enabled:hover {
-    background-color: #07001f;
+    background-color: rgb(220, 53, 69); /* Red background when enabled */
 }

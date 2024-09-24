@@ -6,32 +6,7 @@
     <title>Unit Log In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        /* Highlight the selected row with pale green */
-        .selected {
-            background-color: #d1e7dd; /* Pale green background */
-        }
 
-        /* Disabled state for the Log Out button */
-        .btn.disabled {
-            background-color: gray;
-            cursor: not-allowed;
-        }
-
-        .btn.disabled:hover {
-            background-color: gray; /* Prevent hover effect when disabled */
-        }
-
-        /* Active state for the Log Out button */
-        .btn.enabled {
-            background-color: rgb(60,148,84); /* Green */
-            cursor: pointer;
-        }
-
-        .btn.enabled:hover {
-            background-color: #07001f; /* Darker green on hover */
-        }
-    </style>
 </head>
 <body>
     <div class="container-wrapper">
@@ -160,19 +135,25 @@
     let selectedRow = null;
     const logoutBtn = document.getElementById("logoutBtn");
 
+    // Initial state of the button
+    logoutBtn.disabled = true; // Disable the button initially
+    logoutBtn.classList.add("disabled"); // Add the disabled class
+    logoutBtn.style.backgroundColor = "gray"; // Set background color to gray
+
     rows.forEach(row => {
         row.addEventListener("click", function() {
             // If the clicked row is already selected, deselect it
             if (selectedRow === row) {
-                row.classList.remove("selected"); // Remove the green highlight
+                row.classList.remove("selected"); // Remove the highlight
                 selectedRow = null; // Clear the selected row
                 logoutBtn.disabled = true; // Disable the Log Out button
                 logoutBtn.classList.remove("enabled");
                 logoutBtn.classList.add("disabled");
+                logoutBtn.style.backgroundColor = "gray"; // Set background color to gray
             } else {
                 // Deselect the previously selected row, if any
                 if (selectedRow) {
-                    selectedRow.classList.remove("selected"); // Remove green highlight from previous row
+                    selectedRow.classList.remove("selected"); // Remove highlight from previous row
                 }
                 // Select the current row
                 selectedRow = row;
@@ -182,6 +163,7 @@
                 logoutBtn.disabled = false;
                 logoutBtn.classList.remove("disabled");
                 logoutBtn.classList.add("enabled");
+                logoutBtn.style.backgroundColor = "rgb(220, 53, 69)"; // Set button to red
             }
         });
     });
