@@ -6,6 +6,8 @@
     <title>Unit Log In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"> <!-- DataTables Buttons CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -121,6 +123,9 @@
                 </table>
             </div>
             <button id="logoutBtn" class="btn btn-danger disabled" disabled>Log Out</button> <!-- Disabled Log Out button -->
+            
+            <!-- Check Records button -->
+            <button id="checkRecordsBtn" class="btn btn-info mt-3">Check Records</button>
         </div>
     </div>
 
@@ -151,11 +156,85 @@
         </div>
     </div>
 
+    <!-- Modal for Check Records -->
+    <div class="modal fade" id="checkRecordsModal" tabindex="-1" role="dialog" aria-labelledby="checkRecordsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="checkRecordsModalLabel">Check Records</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- DataTable -->
+                        <table id="recordsTable" class="display table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>ID Number</th>
+                                    <th>Asset Tag</th>
+                                    <th>Brand</th>
+                                    <th>Charger</th>
+                                    <th>Date Logged In</th>
+                                    <th>Date Logged Out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                include 'connect.php';
+
+                                // Fetch records from the database
+                                $result = $conn->query("SELECT requestor_name, id_number, asset_tag_number, brand_unit, charger_option, date_logged_in, date_logged_out FROM UnitLogInForm");
+
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                        echo "<tr>";
+                                        echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['id_number']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['charger_option']) . "</td>";
+                                        echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
+                                        if ($row['date_logged_out']) {
+                                            echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_out']))) . "</td>";
+                                        } else {
+                                            echo "<td>Still logged in</td>";
+                                        }
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='7'>No records found</td></tr>";
+                                }
+
+                                $conn->close();
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <img src="img/emsgroup.png" alt="EMS Logo" class="bottom-right-image">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> <!-- jQuery -->
+
+    <!--Scripts-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script> <!-- Popper.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script> <!-- DataTables Buttons JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> <!-- JSZip for Excel export -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script> <!-- Buttons for CSV, Excel, and PDF export -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script> <!-- Button for Print export -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.flash.min.js"></script> <!-- Flash button for older formats -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script> <!-- pdfmake for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> <!-- vfs_fonts for PDF export -->
 
     <script>
     const rows = document.querySelectorAll("#unitLogOutTable tbody tr");
@@ -221,6 +300,38 @@
             };
             xhr.send("id=" + selectedId);
         }
+    });
+
+    // Check Records button click handler to show the modal
+    $(document).ready(function() {
+    $('#checkRecordsModal').on('shown.bs.modal', function () {
+        if ($.fn.DataTable.isDataTable('#recordsTable')) {
+            $('#recordsTable').DataTable().destroy(); // Destroy the existing DataTable instance
+        }
+
+        // Reinitialize DataTable with custom settings
+        $('#recordsTable').DataTable({
+            dom: 'Bfrtip',  // Show buttons and filter/search
+            buttons: [
+                'csvHtml5',    // CSV export
+                'excelHtml5',  // Excel export
+                'pdfHtml5',    // PDF export
+                'print'        // Print view
+            ],
+            responsive: true, // Ensure responsiveness
+            autoWidth: false, // Disable automatic width calculation
+            pageLength: 10, // Set default page length
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search records..."
+            }
+        });
+    });
+
+    // Show the "Check Records" modal
+    document.getElementById("checkRecordsBtn").addEventListener("click", function() {
+        $('#checkRecordsModal').modal('show');
+        });
     });
     </script>
 </body>
