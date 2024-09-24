@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container-wrapper">
-        <div class="container" id="Log In">
+    <div class="container" id="Log In">
             <h1 class="form-title">For Unit Log In</h1>
 
             <form id="unitLogInForm" method="post" action="login.php">
@@ -76,6 +76,7 @@
             </form>
         </div>
 
+
         <!-- New panel for displaying borrowed unit information -->
         <div class="right-panel">
             <h2>Currently Logged In Units</h2>
@@ -91,32 +92,62 @@
                     </thead>
                     <tbody>
                         <?php
-                        // Include the connection file and query for entries where is_logged_out = 0
                         include 'connect.php';
 
-                        $result = $conn->query("SELECT id, requestor_name, asset_tag_number, brand_unit, date_logged_in FROM UnitLogInForm WHERE is_logged_out = 0");
+                        $result = $conn->query("SELECT id, requestor_name, id_number, asset_tag_number, brand_unit, charger_option, date_logged_in FROM UnitLogInForm WHERE is_logged_out = 0");
 
                         if ($result->num_rows > 0) {
-                            // Output data for each row
                             while($row = $result->fetch_assoc()) {
-                                echo "<tr data-id='" . $row['id'] . "'>";
+                                echo "<tr data-id='" . $row['id'] . "' 
+                                          data-name='" . htmlspecialchars($row['requestor_name']) . "' 
+                                          data-idnumber='" . htmlspecialchars($row['id_number']) . "' 
+                                          data-asset='" . htmlspecialchars($row['asset_tag_number']) . "' 
+                                          data-brand='" . htmlspecialchars($row['brand_unit']) . "' 
+                                          data-charger='" . htmlspecialchars($row['charger_option']) . "' 
+                                          data-date='" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "'>";
                                 echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
-                                echo "<td>" . htmlspecialchars(date("m/d/Y", strtotime($row['date_logged_in']))) . "</td>";
+                                echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='4'>No borrowed units</td></tr>";
+                            echo "<tr><td colspan='6'>No borrowed units</td></tr>";
                         }
 
-                        // Close the connection
                         $conn->close();
                         ?>
                     </tbody>
                 </table>
             </div>
             <button id="logoutBtn" class="btn btn-danger disabled" disabled>Log Out</button> <!-- Disabled Log Out button -->
+        </div>
+    </div>
+
+    <!-- Modal for Log Out confirmation -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Log Out Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name of Requestor:</strong> <span id="modalRequestorName"></span></p>
+                    <p><strong>ID #:</strong> <span id="modalIdNumber"></span></p>
+                    <p><strong>Asset Tag #:</strong> <span id="modalAssetTag"></span></p>
+                    <p><strong>Brand of Laptop:</strong> <span id="modalBrandUnit"></span></p>
+                    <p><strong>Charger Option:</strong> <span id="modalChargerOption"></span></p>
+                    <p><strong>Date Logged In:</strong> <span id="modalDateLoggedIn"></span></p>
+                    <p>Are you sure you want to log out this unit?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogout" style="background-color: rgb(220, 53, 69);">Confirm Log Out</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -127,50 +158,56 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- Bootstrap JS -->
 
     <script>
-    // Selectable row logic
     const rows = document.querySelectorAll("#unitLogOutTable tbody tr");
     let selectedRow = null;
     const logoutBtn = document.getElementById("logoutBtn");
-
-    // Initial state of the button
-    logoutBtn.disabled = true; // Disable the button initially
-    logoutBtn.classList.add("disabled"); // Add the disabled class
-    logoutBtn.style.backgroundColor = "gray"; // Set background color to gray
+    const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'), {});
+    let selectedId = null;
 
     rows.forEach(row => {
         row.addEventListener("click", function() {
-            // If the clicked row is already selected, deselect it
             if (selectedRow === row) {
-                row.classList.remove("selected"); // Remove the highlight
-                selectedRow = null; // Clear the selected row
-                logoutBtn.disabled = true; // Disable the Log Out button
+                row.classList.remove("selected");
+                selectedRow = null;
+                logoutBtn.disabled = true;
                 logoutBtn.classList.remove("enabled");
                 logoutBtn.classList.add("disabled");
-                logoutBtn.style.backgroundColor = "gray"; // Set background color to gray
+                logoutBtn.style.backgroundColor = "gray";
             } else {
-                // Deselect the previously selected row, if any
                 if (selectedRow) {
-                    selectedRow.classList.remove("selected"); // Remove highlight from previous row
+                    selectedRow.classList.remove("selected");
                 }
-                // Select the current row
                 selectedRow = row;
-                row.classList.add("selected"); // Highlight the selected row
+                row.classList.add("selected");
 
-                // Enable the Log Out button
                 logoutBtn.disabled = false;
                 logoutBtn.classList.remove("disabled");
                 logoutBtn.classList.add("enabled");
-                logoutBtn.style.backgroundColor = "rgb(220, 53, 69)"; // Set button to red
+                logoutBtn.style.backgroundColor = "rgb(220, 53, 69)";
+
+                // Populate modal fields with data from the selected row
+                document.getElementById("modalRequestorName").textContent = row.getAttribute("data-name");
+                document.getElementById("modalIdNumber").textContent = row.getAttribute("data-idnumber");
+                document.getElementById("modalAssetTag").textContent = row.getAttribute("data-asset");
+                document.getElementById("modalBrandUnit").textContent = row.getAttribute("data-brand");
+                document.getElementById("modalChargerOption").textContent = row.getAttribute("data-charger");
+                document.getElementById("modalDateLoggedIn").textContent = row.getAttribute("data-date");
+
+                selectedId = row.getAttribute("data-id"); // Store the ID of the selected row
             }
         });
     });
 
-    // Log Out button click handler
+    // Log Out button click handler to show the modal
     logoutBtn.addEventListener("click", function() {
         if (selectedRow) {
-            const id = selectedRow.getAttribute("data-id");
+            logoutModal.show(); // Show the modal
+        }
+    });
 
-            // Send AJAX request to log out the selected unit
+    // Confirm Log Out button handler
+    document.getElementById("confirmLogout").addEventListener("click", function() {
+        if (selectedId) {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "logout.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -182,7 +219,7 @@
                     alert("Error logging out unit");
                 }
             };
-            xhr.send("id=" + id);
+            xhr.send("id=" + selectedId);
         }
     });
     </script>

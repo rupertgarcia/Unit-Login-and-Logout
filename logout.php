@@ -1,40 +1,38 @@
 <?php
 include 'connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the ID of the unit to log out
-    if (isset($_POST['id'])) {
-        $id = $_POST['id'];
-        $dateLoggedOut = date("Y-m-d H:i:s");  // Current date and time for logged out
+date_default_timezone_set('Asia/Manila');
 
-        // Prepare the SQL update query
-        $sql = "UPDATE UnitLogInForm 
-                SET date_logged_out = ?, is_logged_out = 1 
-                WHERE id = ?";
 
-        // Prepare the statement
-        if ($stmt = $conn->prepare($sql)) {
-            // Bind the parameters to the query
-            $stmt->bind_param("si", $dateLoggedOut, $id);
+if (isset($_POST['id'])) {
+    // Get the ID of the unit to be logged out
+    $id = $_POST['id'];
+    $dateLoggedOut = date("Y-m-d H:i:s");  // Get the current date and time for logged out
 
-            // Execute the statement
-            if ($stmt->execute()) {
-                echo "success"; // Indicate success to the frontend
-            } else {
-                echo "error"; // Handle query error
-            }
+    // Prepare the SQL query to update the record
+    $sql = "UPDATE UnitLogInForm 
+            SET date_logged_out = ?, is_logged_out = 1 
+            WHERE id = ?";
 
-            // Close the statement
-            $stmt->close();
-        } else {
-            echo "error"; // Handle query preparation error
-        }
+    // Prepare the statement
+    $stmt = $conn->prepare($sql);
+
+    // Bind the parameters (date_logged_out and id)
+    $stmt->bind_param("si", $dateLoggedOut, $id);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        // Success response
+        echo "Unit logged out successfully.";
     } else {
-        echo "error"; // Handle missing ID error
+        // Error response
+        echo "Error logging out unit: " . $stmt->error;
     }
-} else {
-    echo "error"; // Handle incorrect request method
+
+    // Close the statement
+    $stmt->close();
 }
 
 // Close the connection
 $conn->close();
+?>

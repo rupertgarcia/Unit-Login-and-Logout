@@ -2,6 +2,9 @@
 
 include 'connect.php';
 
+date_default_timezone_set('Asia/Manila');
+
+
 if (isset($_POST['submit'])) {
     // Get the form values
     $requestorName = $_POST['requestorName'];
