@@ -38,22 +38,7 @@
         <div class="container" id="Log In">
             <h1 class="form-title">For Unit Log In</h1>
 
-            <!-- Success message check -->
-            <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
-                <script>
-                    // Show success message
-                    alert("Unit Log In Form Sent Successfully");
-
-                    // Remove the query parameter to prevent the message from appearing on refresh
-                    if (window.history.replaceState) {
-                        const urlWithoutParams = window.location.href.split('?')[0];
-                        window.history.replaceState(null, null, urlWithoutParams);
-                    }
-                </script>
-            <?php endif; ?>
-
             <form id="unitLogInForm" method="post" action="login.php">
-
                 <!-- NAME OF REQUESTOR -->
                 <div class="input-group">
                     <i class="fas fa-user"></i>
@@ -120,15 +105,7 @@
                 </div>
                 
                 <input type="submit" class="btn" value="Submit" name="submit">
-
             </form>
-
-            <script>
-                // Automatically reset form after submission
-                if (window.location.search.includes('status=success')) {
-                    document.getElementById('unitLogInForm').reset();
-                }
-            </script>
         </div>
 
         <!-- New panel for displaying borrowed unit information -->
@@ -178,49 +155,58 @@
     <img src="img/emsgroup.png" alt="EMS Logo" class="bottom-right-image">
 
     <script>
-        // Selectable row logic
-        const rows = document.querySelectorAll("#unitLogOutTable tbody tr");
-        let selectedRow = null;
-        const logoutBtn = document.getElementById("logoutBtn");
+    // Selectable row logic
+    const rows = document.querySelectorAll("#unitLogOutTable tbody tr");
+    let selectedRow = null;
+    const logoutBtn = document.getElementById("logoutBtn");
 
-        rows.forEach(row => {
-            row.addEventListener("click", function() {
-                // Remove highlight from previous selection
+    rows.forEach(row => {
+        row.addEventListener("click", function() {
+            // If the clicked row is already selected, deselect it
+            if (selectedRow === row) {
+                row.classList.remove("selected"); // Remove the green highlight
+                selectedRow = null; // Clear the selected row
+                logoutBtn.disabled = true; // Disable the Log Out button
+                logoutBtn.classList.remove("enabled");
+                logoutBtn.classList.add("disabled");
+            } else {
+                // Deselect the previously selected row, if any
                 if (selectedRow) {
-                    selectedRow.classList.remove("selected");
+                    selectedRow.classList.remove("selected"); // Remove green highlight from previous row
                 }
-
                 // Select the current row
                 selectedRow = row;
-                row.classList.add("selected");
+                row.classList.add("selected"); // Highlight the selected row
 
-                // Enable the Log Out button by removing disabled styles and adding enabled styles
+                // Enable the Log Out button
                 logoutBtn.disabled = false;
                 logoutBtn.classList.remove("disabled");
                 logoutBtn.classList.add("enabled");
-            });
-        });
-
-        // Log Out button click handler
-        logoutBtn.addEventListener("click", function() {
-            if (selectedRow) {
-                const id = selectedRow.getAttribute("data-id");
-
-                // Send AJAX request to log out the selected unit
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "logout.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        // Refresh the page after logout
-                        window.location.reload();
-                    } else {
-                        alert("Error logging out unit");
-                    }
-                };
-                xhr.send("id=" + id);
             }
         });
-    </script>
+    });
+
+    // Log Out button click handler
+    logoutBtn.addEventListener("click", function() {
+        if (selectedRow) {
+            const id = selectedRow.getAttribute("data-id");
+
+            // Send AJAX request to log out the selected unit
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "logout.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Refresh the page after logout
+                    window.location.reload();
+                } else {
+                    alert("Error logging out unit");
+                }
+            };
+            xhr.send("id=" + id);
+        }
+    });
+</script>
+
 </body>
 </html>

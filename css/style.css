@@ -2,20 +2,31 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Helvetica", sans-serif; /* Changed to Helvetica */
+    font-family: "Helvetica", sans-serif;
 }
 
 body{
     background-color: #c9ffdc;
 }
-.container{
-    background:#fff;
-    width: 450px;
-    padding: 1.5rem;
-    margin: 0px auto;
-    border-radius: 10px;
-    box-shadow: 0 20px 35px rgba(0,0,1,0.9);
+
+/* Container wrapper to hold the form and table next to each other */
+.container-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align the form and table to the top */
+    margin: 50px auto; /* Center the entire section horizontally */
+    max-width: 1200px; /* Set a max width for the entire form and table container */
 }
+
+/* Adjust the form (left) container */
+.container {
+    width: 55%; /* Adjust width to occupy 55% of the space */
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.9);
+}
+
 form{
     margin: 0 2rem;
 }
@@ -36,7 +47,7 @@ input{
     font-size: 15px;
 }
 .input-group{
-    margin-bottom: 10px; /* Increase space between input boxes */
+    margin-bottom: 10px;
 }
 .input-group i{
     position: absolute;
@@ -45,7 +56,7 @@ input{
 input:focus{
     background-color: transparent;
     outline: transparent;
-    border-bottom: 2px solid hsl(327, 90%, 28%);
+    border-bottom: 2px solid hsl(131, 100%, 13%);
 }
 input::placeholder{
     color: transparent;
@@ -97,64 +108,61 @@ input:focus~label,input:not(:placeholder-shown)~label{
 }
 
 .input-row .input-group {
-    width: 48%; /* Adjust width so both fields fit side by side */
+    width: 48%;
 }
 
-/* Optional: Ensure proper behavior on smaller screens */
 @media (max-width: 600px) {
     .input-row {
-        flex-direction: column; /* Stack inputs on small screens */
+        flex-direction: column;
     }
 
     .input-row .input-group {
-        width: 100%; /* Full width when stacked */
+        width: 100%;
     }
 }
 
 .input-group-purpose {
-    position: relative; /* Make the input group relative */
-    padding: 1% 0; /* Add padding if needed */
+    position: relative;
+    padding: 1% 0;
 }
 
 .input-group-purpose i {
     position: relative;
-    color: black; /* Icon color */
-    margin-bottom: 5px; /* Space between icon and label */
-    display: block; /* Ensure the icon is on a new line */
+    color: black;
+    margin-bottom: 5px;
+    display: block;
 }
 
 .input-group-purpose label {
     position: relative;
-    display: block; /* Ensure the label is on a new line */
-    color: #757575; /* Default label color */
-    margin-bottom: -15px; /* Space between label and textarea */
+    display: block;
+    color: #757575;
+    margin-bottom: -15px;
 }
 
-/* Textarea styles */
 textarea {
-    width: 100%; /* Full width */
-    height: 100px; /* Set height */
-    padding: 10px; /* Padding inside the textarea */
-    border: 1px solid #757575; /* Border color */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 15px; /* Font size */
-    color: inherit; /* Inherit text color from parent */
-    background-color: transparent; /* Background color */
-    resize: none; /* Disable resizing */
-    outline: none; /* Remove outline */
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #757575;
+    border-radius: 5px;
+    font-size: 15px;
+    color: inherit;
+    background-color: transparent;
+    resize: none;
+    outline: none;
 }
 
-/* Remove hover effect styles */
 textarea:focus {
-    border: 1px solid #757575; /* Keep border color on focus */
+    border: 1px solid #757575;
 }
 
 .radio-row {
-    display: flex; /* Use flexbox for horizontal alignment */
-    justify-content: center; /* Center the entire radio button row */
-    align-items: center; /* Align items vertically */
-    padding: 10px 0; /* Padding for spacing */
-    margin-left: -120px; /* Adjust this value based on how much left you want to move the radio buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    margin-left: -120px;
     margin-top: 5px;
     margin-bottom: -5px;
 }
@@ -162,126 +170,144 @@ textarea:focus {
 .radio-row label {
     display: flex;
     align-items: center;
-    margin-left: 30px; /* Add this margin to align with other labels that have icons */
+    margin-left: 30px;
     cursor: pointer;
     font-size: 1rem;
-    transition: color 0.3s ease; /* Smooth transition for label color change */
+    transition: color 0.3s ease;
 }
 
 .radio-row input[type="radio"] {
-    margin-right: 8px; /* Space between radio button and label text */
-    accent-color: #004d00; /* Dark green color for the radio button */
+    margin-right: 8px;
+    accent-color: #004d00;
 }
 
-/* Change the label color when the radio button is selected */
 .radio-row input[type="radio"]:checked + label {
-    color: #0c7c34; /* Change label color to #0c7c34 when the option is selected */
+    color: #0c7c34;
 }
 
-/* Ensure consistent spacing for input groups */
 .input-group {
-    padding: 1% 0; /* Ensure padding is consistent */
+    padding: 1% 0;
 }
 
-/* Add margin to the input group for the Purpose textarea */
 .input-group-purpose {
-    margin-top: 10px; /* Adjust this value for consistent spacing */
+    margin-top: 10px;
 }
 .bottom-right-image {
     position: fixed;
     bottom: 10px;
     right: 10px;
-    width: 150px; /* 1.5x bigger */
-    height: auto; /* Keep the aspect ratio */
-    z-index: 100; /* Make sure it's above other elements */
+    width: 150px;
+    height: auto;
+    z-index: 100;
 }
 
-/* Styling for the container holding both the form and the new right panel */
-.container-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* Align form and table at the top */
-    margin: 50px auto; /* Center horizontally with margin */
-    max-width: 1200px; /* Set a max width for the container */
-}
-
-/* Adjust the form container to take a portion of the width and let it have natural height */
-.container {
-    background: #fff;
-    width: 55%; /* Adjust width to fit next to the table */
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 20px 35px rgba(0,0,1,0.9);
-    /* Remove fixed height */
-    overflow: hidden; /* Prevent any overflow from expanding the form */
-}
-
-/* Ensure the right panel takes height relative to the form */
+/* Adjust the table (right panel) container */
 .right-panel {
-    width: 40%; /* Adjust width to fit next to the form */
+    width: 40%; /* Adjust width to occupy 40% of the space */
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin-left: 20px; /* Add space between the form and the table */
-    max-height: 100%; /* Allow height adjustment */
+    margin-left: 20px; /* Add some space between the form and table */
     display: flex;
     flex-direction: column;
+    height: calc(100% - 20%); /* Make it shorter than the form by 20% */
 }
 
-/* Ensure the title is stationary and the table container scrolls */
+
+
+/* Styling the h2 inside the right panel */
 .right-panel h2 {
     text-align: center;
+    padding-top: 10px; /* Add padding to the top */
     padding-bottom: 10px;
     margin: 0;
+    background-color: #024e16; /* Use a greenish background */
+    color: white; /* White text */
+    font-size: 1.6rem; /* Slightly larger font size */
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Rounded top corners to match the panel */
+    z-index: 2; /* Keep the title on top */
 }
 
-/* Scrollable container for the table body */
-.right-panel .table-container {
+.table-container {
+    overflow-y: auto;
     flex: 1;
-    max-height: 500px; /* You can adjust this if needed */
-    overflow-y: auto; /* Enable vertical scrolling */
+    position: relative;
+    max-height: calc(100vh - 220px); /* Set a max height for the table container */
 }
 
-/* Table styling */
 .right-panel table {
     width: 100%;
     border-collapse: collapse;
 }
 
 .right-panel table th, .right-panel table td {
-    border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
     word-wrap: break-word; /* Ensure text wraps properly */
-    white-space: normal; /* Allow wrapping of text in case of long content */
+    white-space: normal; /* Allow text wrapping */
 }
 
+/* Styling for the thead inside the table */
 .right-panel table th {
-    background-color: #f2f2f2;
-    position: sticky;
+    background-color: #3c9454; /* Match the header background color */
+    color: white; /* White text */
+    font-weight: bold; /* Bold text */
+    font-size: 1.2rem; /* Larger font size */
+    padding: 12px 10px; /* Add some padding for better readability */
+    position: sticky; /* Sticky header when scrolling */
     top: 0;
-    z-index: 1; /* Make sure the header stays on top */
+    z-index: 1; /* Make sure the header stays on top when scrolling */
+    text-align: left;
+    border-bottom: 2px solid #fff; /* Add a border under the header */
 }
 
-.right-panel table tr:nth-child(even) {
-    background-color: #f9f9f9;
+/* Style for table rows */
+.right-panel table td {
+    border-bottom: 1px solid #ddd; /* Light border between rows */
+    padding: 12px; /* Padding inside table cells */
 }
 
-/* Optional: Ensure proper behavior on smaller screens */
-@media (max-width: 900px) {
-    .container-wrapper {
-        flex-direction: column; /* Stack the form and table on small screens */
-    }
+/* Hover effect for table rows */
+.right-panel table tr:hover {
+    background-color: #e6f5eb; /* Light green hover effect */
+}
 
-    .right-panel {
-        width: 100%; /* Make the table panel full width on smaller screens */
-        margin-left: 0; /* Remove margin */
-        max-height: none; /* Allow it to expand vertically on small screens */
-    }
+/* Default background for all rows */
+.right-panel table tr {
+    background-color: #f0f0f0; /* Light gray for all rows */
+}
 
-    .container {
-        width: 100%; /* Make the form full width on smaller screens */
-        height: auto; /* Allow the form to adjust height on smaller screens */
-    }
+/* Highlight the selected row with pale green */
+.right-panel table tr.selected {
+    background-color: #d1e7dd !important; /* Pale green background for selected row */
+}
+
+/* Scrollbar styling */
+.table-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: rgba(60, 148, 84, 0.8); /* Matching scrollbar with greenish color */
+    border-radius: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background-color: #e0e0e0; /* Light gray scrollbar track */
+}
+
+/* Button styles */
+.btn.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.btn.enabled {
+    background-color: rgb(60,148,84);
+    cursor: pointer;
+}
+
+.btn.enabled:hover {
+    background-color: #07001f;
 }
