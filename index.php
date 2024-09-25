@@ -26,7 +26,7 @@
                 <div class="form-row">
                     <div class="form-group input-group col-md-6">
                         <i class="fas fa-id-card"></i>
-                        <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="ID Number">
+                        <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="ID Number" required>
                     </div>
 
                     <div class="form-group input-group col-md-6">
@@ -81,107 +81,54 @@
             <h2>Status</h2>
             <div class="summary-container">
                 <p><strong>Pending:</strong> <span id="pendingCount">0</span></p>
+                <p><strong>Ongoing:</strong> <span id="ongoingCount">0</span></p>
                 <p><strong>Done:</strong> <span id="doneCount">0</span></p>
             </div>
 
-            <!-- Check Records button -->
-            <button id="checkRecordsBtn" class="btn btn-info mt-3">Check Records</button>
-        </div>
-    </div>
+            <!-- New panel for displaying borrowed unit information -->
+            <h2>Currently Logged In Units</h2>
+            <div class="table-container">
+                <table id="unitLogOutTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>ID #</th>
+                            <th>Brand Unit</th>
+                            <th>Logged In</th>
+                            <th>Status</th> <!-- Added Status column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        include 'connect.php';
 
-    <!-- Modal for Check Records -->
-    <div class="modal fade" id="checkRecordsModal" tabindex="-1" role="dialog" aria-labelledby="checkRecordsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="checkRecordsModalLabel">Check Records</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- DataTable -->
-                    <table id="recordsTable" class="display table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>ID Number</th>
-                                <th>Local Number</th> <!-- Added Local Number column -->
-                                <th>Asset Tag</th>
-                                <th>Brand</th>
-                                <th>Charger</th>
-                                <th>Date Logged In</th>
-                                <th>Date Logged Out</th>
-                                <th>Action</th> <!-- Added new column for View button -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            include 'connect.php';
+                        // Fetch records from the database, including unit_status
+                        $result = $conn->query("SELECT id, requestor_name, id_number, asset_tag_number, brand_unit, charger_option, date_logged_in, unit_status FROM UnitLogInForm");
 
-                            // Fetch records from the database
-                            $result = $conn->query("SELECT id, requestor_name, id_number, local_number, asset_tag_number, brand_unit, charger_option, date_logged_in, date_logged_out FROM UnitLogInForm");
-
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    echo "<tr>";
-                                    echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['id_number']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['local_number']) . "</td>"; // Added Local Number column
-                                    echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['charger_option']) . "</td>";
-                                    echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
-                                    if ($row['date_logged_out']) {
-                                        echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_out']))) . "</td>";
-                                    } else {
-                                        echo "<td>Pending</td>";
-                                    }
-                                    // Add the View button in the Action column
-                                    echo "<td><button class='btn btn-primary view-btn' data-id='" . $row['id'] . "'>View</button></td>";
-                                    echo "</tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='9'>No records found</td></tr>"; // Updated colspan to match the number of columns
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<tr data-id='" . $row['id'] . "' 
+                                          data-name='" . htmlspecialchars($row['requestor_name']) . "' 
+                                          data-idnumber='" . htmlspecialchars($row['id_number']) . "' 
+                                          data-asset='" . htmlspecialchars($row['asset_tag_number']) . "' 
+                                          data-brand='" . htmlspecialchars($row['brand_unit']) . "' 
+                                          data-charger='" . htmlspecialchars($row['charger_option']) . "' 
+                                          data-date='" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "'>";
+                                echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['id_number']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
+                                echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['unit_status']) . "</td>"; // Display unit_status as Status
+                                echo "</tr>";
                             }
+                        } else {
+                            echo "<tr><td colspan='5'>No units currently logged in.</td></tr>";
+                        }
 
-                            $conn->close();
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- View User Modal -->
-    <div class="modal fade" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby="viewUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewUserModalLabel">User Information</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Name of Requestor:</strong> <span id="viewRequestorName"></span></p>
-                    <p><strong>ID #:</strong> <span id="viewIdNumber"></span></p>
-                    <p><strong>Local #:</strong> <span id="viewLocalNumber"></span></p>
-                    <p><strong>Email:</strong> <span id="viewEmail"></span></p> <!-- Added email -->
-                    <p><strong>Asset Tag #:</strong> <span id="viewAssetTag"></span></p>
-                    <p><strong>Brand of Laptop:</strong> <span id="viewBrandUnit"></span></p>
-                    <p><strong>Charger Option:</strong> <span id="viewChargerOption"></span></p>
-                    <p><strong>Date Logged In:</strong> <span id="viewDateLoggedIn"></span></p>
-                    <p><strong>Date Logged Out:</strong> <span id="viewDateLoggedOut"></span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="logOutUser">Log Out User</button>
-                </div>
+                        $conn->close();
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -202,40 +149,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> <!-- vfs_fonts for PDF export -->
 
     <script>
-    $(document).ready(function() {
-    // Initialize DataTable for the recordsTable
-    const recordsTable = $('#recordsTable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'csvHtml5',
-            'excelHtml5',
-            'pdfHtml5',
-            'print'
-        ],
-        ajax: {
-            url: 'fetch_records.php', // URL to fetch table data
-            type: 'GET',
-            dataSrc: '' // Expecting an array of records
-        },
-        columns: [
-            { data: 'requestor_name' },
-            { data: 'id_number' },
-            { data: 'local_number' },
-            { data: 'asset_tag_number' },
-            { data: 'brand_unit' },
-            { data: 'charger_option' },
-            { data: 'date_logged_in' },
-            { data: 'date_logged_out' },
-            {
-                data: null,
-                render: function(data, type, row) {
-                    return `<button class='btn btn-primary view-btn' data-id='${row.id}'>View</button>`;
-                }
-            }
-        ]
-    });
-
-    // Function to update the Pending and Done counters
+    // Function to update the Pending, Ongoing, and Done counters
     function updateCounters() {
         $.ajax({
             url: 'get_unit_counts.php',
@@ -243,6 +157,7 @@
             success: function(data) {
                 const counts = JSON.parse(data);
                 $('#pendingCount').text(counts.pending);
+                $('#ongoingCount').text(counts.ongoing);
                 $('#doneCount').text(counts.done);
             }
         });
@@ -251,80 +166,11 @@
     // Call updateCounters every 10 seconds to refresh the counts
     setInterval(function() {
         updateCounters();
-        recordsTable.ajax.reload(null, false); // Reload DataTable without resetting pagination
     }, 10000); // 10000 ms = 10 seconds
 
-    // Initial data load for counters and table
+    // Initial data load for counters
     updateCounters();
 
-    // Show the "Check Records" modal
-    $('#checkRecordsBtn').on('click', function() {
-        $('#checkRecordsModal').modal('show');
-    });
-
-    // View button click handler
-    $(document).on('click', '.view-btn', function() {
-        const row = $(this).closest('tr'); // Get the row of the clicked button
-        const rowData = recordsTable.row(row).data(); // Get the data of the row
-
-        // Populate modal fields with data from the selected row
-        $('#viewRequestorName').text(rowData.requestor_name);
-        $('#viewIdNumber').text(rowData.id_number);
-        $('#viewLocalNumber').text(rowData.local_number);
-        $('#viewEmail').text(rowData.email_address);
-        $('#viewAssetTag').text(rowData.asset_tag_number);
-        $('#viewBrandUnit').text(rowData.brand_unit);
-        $('#viewChargerOption').text(rowData.charger_option);
-        $('#viewDateLoggedIn').text(rowData.date_logged_in);
-
-        const dateLoggedOut = rowData.date_logged_out;
-        if (dateLoggedOut && dateLoggedOut !== 'Pending') {
-            $('#viewDateLoggedOut').text(dateLoggedOut);
-            $('#logOutUser').hide(); // Hide the "Log Out User" button if the user is logged out
-        } else {
-            $('#viewDateLoggedOut').text('N/A');
-            $('#logOutUser').show(); // Show the "Log Out User" button if the user is not logged out
-        }
-
-        // Open the modal
-        $('#viewUserModal').modal('show');
-
-        // Store the id for log out functionality
-        const userId = $(this).data('id');
-
-        // Handle the Log Out button click inside the modal
-        $('#logOutUser').off('click').on('click', function() {
-            if (confirm('Are you sure you want to log out this user?')) {
-                // Perform the log out action using AJAX
-                $.ajax({
-                    url: 'logout.php',
-                    method: 'POST',
-                    data: { id: userId },
-                    success: function(response) {
-                        alert(response); // Display response from logout.php
-                        window.location.reload(); // Reload the page to update the table
-                    },
-                    error: function() {
-                        alert('Error logging out user.');
-                    }
-                });
-            }
-        });
-    });
-
-    // Ensure scrolling is restored after the modal is hidden
-    $('#viewUserModal').on('hidden.bs.modal', function () {
-        // Force removal of modal-open class and ensure proper scroll
-        $('body').removeClass('modal-open').css('overflow', 'auto').css('padding-right', ''); 
-        // Clean any modal backdrop left
-        $('.modal-backdrop').remove();
-    });
-
-    // Show the "Check Records" modal
-    $('#checkRecordsBtn').on('click', function() {
-        $('#checkRecordsModal').modal('show');
-    });
-});
     </script>
 
 </body>

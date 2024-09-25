@@ -1,0 +1,122 @@
+/* Header for the table */
+.right-panel h2 {
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    background-color: #024e16; /* Use a greenish background */
+    color: white; /* White text */
+    font-size: 1.5rem; /* Slightly larger font size */
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+}
+
+/* Table container with scrolling */
+.table-container {
+    flex: 1; /* Allow the table to take up the remaining height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 100%; /* Ensure the table container respects the right-panel height */
+}
+
+/* Table styles */
+.right-panel table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Fix the sticky header */
+.right-panel table th, .right-panel table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.right-panel table th {
+    background-color: #3c9454; /* Match the header background color */
+    color: white; /* White text */
+    font-weight: bold;
+    position: sticky; /* Sticky header */
+    top: 0; /* Stick the header at the top */
+    z-index: 2; /* Ensure header stays on top when scrolling */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Add shadow for clean division */
+}
+
+/* Adjust row hover effect */
+.right-panel table tr:hover {
+    background-color: #e6f5eb; /* Light green hover effect */
+}
+
+/* Highlight the selected row with pale green */
+.right-panel table tr.selected {
+    background-color: #d1e7dd !important; /* Pale green background for selected row */
+}
+
+/* DataTable wrapper */
+#recordsTable_wrapper {
+    width: 100%; /* Full width */
+    margin: 0 auto;
+    color: #333; /* Text color */
+}
+
+/* Header styling for DataTables */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info {
+    color: #2e7d32; /* Darker green text for table controls */
+}
+
+/* DataTable buttons */
+.dt-buttons .dt-button {
+    background-color: #388e3c; /* Green buttons */
+    color: white; /* White text */
+    border: none;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.dt-buttons .dt-button:hover {
+    background-color: #1b5e20; /* Darker green on hover */
+}
+
+/* Make the DataTable smaller */
+#recordsTable_wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#recordsTable {
+    font-size: 14px; /* Reduce font size for table */
+}
+
+#recordsTable thead th {
+    padding: 6px; /* Reduce padding for table headers */
+    font-size: 15px; /* Reduce header font size */
+    color: rgba(255, 255, 255, 0.91);
+    background-color: #024e16;
+}
+
+#recordsTable tbody td {
+    padding: 6px; /* Reduce padding for table cells */
+    font-size: 14px;
+}
+
+/* Adjust the DataTable buttons to take up less space */
+.dt-buttons .dt-button {
+    padding: 4px 8px; /* Reduce padding inside buttons */
+    font-size: 16px;  /* Smaller font for buttons */
+}
+
+/* Additional adjustments for responsive design */
+@media (max-width: 768px) {
+    #recordsTable {
+        font-size: 16px; /* Even smaller font on small screens */
+    }
+
+    #recordsTable thead th, 
+    #recordsTable tbody td {
+        padding: 4px; /* Smaller padding for small screens */
+    }
+
+    .modal-lg {
+        max-width: 100%; /* Full width on smaller screens */
+    }
+}
