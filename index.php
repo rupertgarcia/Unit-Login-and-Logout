@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="container-wrapper">
-    <div class="container" id="Log In">
+        <div class="container" id="Log In">
             <h1 class="form-title">For Unit Log In</h1>
 
             <form id="unitLogInForm" method="post" action="login.php">
@@ -26,20 +26,19 @@
                 <div class="form-row">
                     <div class="form-group input-group col-md-6">
                         <i class="fas fa-id-card"></i>
-                        <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="ID Number" required pattern="^[1-9]\d*$" title="Please enter a valid positive integer" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                        <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="ID Number">
                     </div>
 
                     <div class="form-group input-group col-md-6">
                         <i class="fas fa-phone"></i>
-                        <input type="text" class="form-control" name="localNumber" id="localNumber" placeholder="Local Number (e.g. 09123456789)" required 
-                            pattern="^09\d{9}$" title="Please enter a valid mobile phone number (e.g. 09123456789)">
+                        <input type="text" class="form-control" name="localNumber" id="localNumber" placeholder="Local Number">
                     </div>
                 </div>
 
                 <!-- EMAIL ADDRESS -->
                 <div class="form-group input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
+                    <input type="text" class="form-control" name="email" id="email" placeholder="Email Address" required>
                 </div>
 
                 <!-- ASSET TAG # -->
@@ -70,158 +69,124 @@
                 <div class="form-group" id="purposeGroup">
                     <i class="fas fa-edit" id="purposeIcon"></i>
                     <label for="purposeUnit">Purpose</label>
-                    <textarea class="form-control" name="purposeUnit" id="purposeUnit" placeholder="Purpose of Borrowing Unit" maxlength="500" required></textarea>
+                    <textarea class="form-control" name="purposeUnit" id="purposeUnit" placeholder="Please specify the purpose." maxlength="500" required></textarea>
                 </div>
 
-                
                 <input type="submit" class="btn btn-primary" value="Submit" name="submit">
             </form>
         </div>
 
-
-        <!-- New panel for displaying borrowed unit information -->
+        <!-- New panel for displaying summary instead of table -->
         <div class="right-panel">
-            <h2>Currently Logged In Units</h2>
-            <div class="table-container">
-                <table id="unitLogOutTable" class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Asset Tag</th>
-                            <th>Brand Unit</th>
-                            <th>Logged In</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        include 'connect.php';
-
-                        $result = $conn->query("SELECT id, requestor_name, id_number, asset_tag_number, brand_unit, charger_option, date_logged_in FROM UnitLogInForm WHERE is_logged_out = 0");
-
-                        if ($result->num_rows > 0) {
-                            while($row = $result->fetch_assoc()) {
-                                echo "<tr data-id='" . $row['id'] . "' 
-                                          data-name='" . htmlspecialchars($row['requestor_name']) . "' 
-                                          data-idnumber='" . htmlspecialchars($row['id_number']) . "' 
-                                          data-asset='" . htmlspecialchars($row['asset_tag_number']) . "' 
-                                          data-brand='" . htmlspecialchars($row['brand_unit']) . "' 
-                                          data-charger='" . htmlspecialchars($row['charger_option']) . "' 
-                                          data-date='" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "'>";
-                                echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
-                                echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='6'>No borrowed units</td></tr>";
-                        }
-
-                        $conn->close();
-                        ?>
-                    </tbody>
-                </table>
+            <h2>Status</h2>
+            <div class="summary-container">
+                <p><strong>Pending:</strong> <span id="pendingCount">0</span></p>
+                <p><strong>Done:</strong> <span id="doneCount">0</span></p>
             </div>
-            <button id="logoutBtn" class="btn btn-danger disabled" disabled>Log Out</button> <!-- Disabled Log Out button -->
-            
+
             <!-- Check Records button -->
             <button id="checkRecordsBtn" class="btn btn-info mt-3">Check Records</button>
         </div>
     </div>
 
-    <!-- Modal for Log Out confirmation -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal for Check Records -->
+    <div class="modal fade" id="checkRecordsModal" tabindex="-1" role="dialog" aria-labelledby="checkRecordsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="logoutModalLabel">Log Out Confirmation</h5>
+                    <h5 class="modal-title" id="checkRecordsModalLabel">Check Records</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Name of Requestor:</strong> <span id="modalRequestorName"></span></p>
-                    <p><strong>ID #:</strong> <span id="modalIdNumber"></span></p>
-                    <p><strong>Asset Tag #:</strong> <span id="modalAssetTag"></span></p>
-                    <p><strong>Brand of Laptop:</strong> <span id="modalBrandUnit"></span></p>
-                    <p><strong>Charger Option:</strong> <span id="modalChargerOption"></span></p>
-                    <p><strong>Date Logged In:</strong> <span id="modalDateLoggedIn"></span></p>
-                    <p>Are you sure you want to log out this unit?</p>
+                    <!-- DataTable -->
+                    <table id="recordsTable" class="display table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>ID Number</th>
+                                <th>Local Number</th> <!-- Added Local Number column -->
+                                <th>Asset Tag</th>
+                                <th>Brand</th>
+                                <th>Charger</th>
+                                <th>Date Logged In</th>
+                                <th>Date Logged Out</th>
+                                <th>Action</th> <!-- Added new column for View button -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            include 'connect.php';
+
+                            // Fetch records from the database
+                            $result = $conn->query("SELECT id, requestor_name, id_number, local_number, asset_tag_number, brand_unit, charger_option, date_logged_in, date_logged_out FROM UnitLogInForm");
+
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($row['id_number']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($row['local_number']) . "</td>"; // Added Local Number column
+                                    echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($row['charger_option']) . "</td>";
+                                    echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
+                                    if ($row['date_logged_out']) {
+                                        echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_out']))) . "</td>";
+                                    } else {
+                                        echo "<td>Pending</td>";
+                                    }
+                                    // Add the View button in the Action column
+                                    echo "<td><button class='btn btn-primary view-btn' data-id='" . $row['id'] . "'>View</button></td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='9'>No records found</td></tr>"; // Updated colspan to match the number of columns
+                            }
+
+                            $conn->close();
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" id="confirmLogout" style="background-color: rgb(220, 53, 69);">Confirm Log Out</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Check Records -->
-    <div class="modal fade" id="checkRecordsModal" tabindex="-1" role="dialog" aria-labelledby="checkRecordsModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="checkRecordsModalLabel">Check Records</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- DataTable -->
-                        <table id="recordsTable" class="display table table-striped table-bordered" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>ID Number</th>
-                                    <th>Asset Tag</th>
-                                    <th>Brand</th>
-                                    <th>Charger</th>
-                                    <th>Date Logged In</th>
-                                    <th>Date Logged Out</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                include 'connect.php';
-
-                                // Fetch records from the database
-                                $result = $conn->query("SELECT requestor_name, id_number, asset_tag_number, brand_unit, charger_option, date_logged_in, date_logged_out FROM UnitLogInForm");
-
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($row['requestor_name']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['id_number']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['asset_tag_number']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['brand_unit']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($row['charger_option']) . "</td>";
-                                        echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_in']))) . "</td>";
-                                        if ($row['date_logged_out']) {
-                                            echo "<td>" . htmlspecialchars(date("m/d/Y H:i:s", strtotime($row['date_logged_out']))) . "</td>";
-                                        } else {
-                                            echo "<td>Still logged in</td>";
-                                        }
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='7'>No records found</td></tr>";
-                                }
-
-                                $conn->close();
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+    <!-- View User Modal -->
+    <div class="modal fade" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby="viewUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewUserModalLabel">User Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name of Requestor:</strong> <span id="viewRequestorName"></span></p>
+                    <p><strong>ID #:</strong> <span id="viewIdNumber"></span></p>
+                    <p><strong>Local #:</strong> <span id="viewLocalNumber"></span></p>
+                    <p><strong>Email:</strong> <span id="viewEmail"></span></p> <!-- Added email -->
+                    <p><strong>Asset Tag #:</strong> <span id="viewAssetTag"></span></p>
+                    <p><strong>Brand of Laptop:</strong> <span id="viewBrandUnit"></span></p>
+                    <p><strong>Charger Option:</strong> <span id="viewChargerOption"></span></p>
+                    <p><strong>Date Logged In:</strong> <span id="viewDateLoggedIn"></span></p>
+                    <p><strong>Date Logged Out:</strong> <span id="viewDateLoggedOut"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="logOutUser">Log Out User</button>
                 </div>
             </div>
         </div>
     </div>
 
     <img src="img/emsgroup.png" alt="EMS Logo" class="bottom-right-image">
-
 
     <!--Scripts-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> <!-- jQuery -->
@@ -237,102 +202,130 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> <!-- vfs_fonts for PDF export -->
 
     <script>
-    const rows = document.querySelectorAll("#unitLogOutTable tbody tr");
-    let selectedRow = null;
-    const logoutBtn = document.getElementById("logoutBtn");
-    const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'), {});
-    let selectedId = null;
-
-    rows.forEach(row => {
-        row.addEventListener("click", function() {
-            if (selectedRow === row) {
-                row.classList.remove("selected");
-                selectedRow = null;
-                logoutBtn.disabled = true;
-                logoutBtn.classList.remove("enabled");
-                logoutBtn.classList.add("disabled");
-                logoutBtn.style.backgroundColor = "gray";
-            } else {
-                if (selectedRow) {
-                    selectedRow.classList.remove("selected");
-                }
-                selectedRow = row;
-                row.classList.add("selected");
-
-                logoutBtn.disabled = false;
-                logoutBtn.classList.remove("disabled");
-                logoutBtn.classList.add("enabled");
-                logoutBtn.style.backgroundColor = "rgb(220, 53, 69)";
-
-                // Populate modal fields with data from the selected row
-                document.getElementById("modalRequestorName").textContent = row.getAttribute("data-name");
-                document.getElementById("modalIdNumber").textContent = row.getAttribute("data-idnumber");
-                document.getElementById("modalAssetTag").textContent = row.getAttribute("data-asset");
-                document.getElementById("modalBrandUnit").textContent = row.getAttribute("data-brand");
-                document.getElementById("modalChargerOption").textContent = row.getAttribute("data-charger");
-                document.getElementById("modalDateLoggedIn").textContent = row.getAttribute("data-date");
-
-                selectedId = row.getAttribute("data-id"); // Store the ID of the selected row
-            }
-        });
-    });
-
-    // Log Out button click handler to show the modal
-    logoutBtn.addEventListener("click", function() {
-        if (selectedRow) {
-            logoutModal.show(); // Show the modal
-        }
-    });
-
-    // Confirm Log Out button handler
-    document.getElementById("confirmLogout").addEventListener("click", function() {
-        if (selectedId) {
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "logout.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Refresh the page after logout
-                    window.location.reload();
-                } else {
-                    alert("Error logging out unit");
-                }
-            };
-            xhr.send("id=" + selectedId);
-        }
-    });
-
-    // Check Records button click handler to show the modal
     $(document).ready(function() {
-    $('#checkRecordsModal').on('shown.bs.modal', function () {
-        if ($.fn.DataTable.isDataTable('#recordsTable')) {
-            $('#recordsTable').DataTable().destroy(); // Destroy the existing DataTable instance
-        }
+    // Initialize DataTable for the recordsTable
+    const recordsTable = $('#recordsTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'csvHtml5',
+            'excelHtml5',
+            'pdfHtml5',
+            'print'
+        ],
+        ajax: {
+            url: 'fetch_records.php', // URL to fetch table data
+            type: 'GET',
+            dataSrc: '' // Expecting an array of records
+        },
+        columns: [
+            { data: 'requestor_name' },
+            { data: 'id_number' },
+            { data: 'local_number' },
+            { data: 'asset_tag_number' },
+            { data: 'brand_unit' },
+            { data: 'charger_option' },
+            { data: 'date_logged_in' },
+            { data: 'date_logged_out' },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return `<button class='btn btn-primary view-btn' data-id='${row.id}'>View</button>`;
+                }
+            }
+        ]
+    });
 
-        // Reinitialize DataTable with custom settings
-        $('#recordsTable').DataTable({
-            dom: 'Bfrtip',  // Show buttons and filter/search
-            buttons: [
-                'csvHtml5',    // CSV export
-                'excelHtml5',  // Excel export
-                'pdfHtml5',    // PDF export
-                'print'        // Print view
-            ],
-            responsive: true, // Ensure responsiveness
-            autoWidth: false, // Disable automatic width calculation
-            pageLength: 10, // Set default page length
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records..."
+    // Function to update the Pending and Done counters
+    function updateCounters() {
+        $.ajax({
+            url: 'get_unit_counts.php',
+            method: 'GET',
+            success: function(data) {
+                const counts = JSON.parse(data);
+                $('#pendingCount').text(counts.pending);
+                $('#doneCount').text(counts.done);
             }
         });
+    }
+
+    // Call updateCounters every 10 seconds to refresh the counts
+    setInterval(function() {
+        updateCounters();
+        recordsTable.ajax.reload(null, false); // Reload DataTable without resetting pagination
+    }, 10000); // 10000 ms = 10 seconds
+
+    // Initial data load for counters and table
+    updateCounters();
+
+    // Show the "Check Records" modal
+    $('#checkRecordsBtn').on('click', function() {
+        $('#checkRecordsModal').modal('show');
+    });
+
+    // View button click handler
+    $(document).on('click', '.view-btn', function() {
+        const row = $(this).closest('tr'); // Get the row of the clicked button
+        const rowData = recordsTable.row(row).data(); // Get the data of the row
+
+        // Populate modal fields with data from the selected row
+        $('#viewRequestorName').text(rowData.requestor_name);
+        $('#viewIdNumber').text(rowData.id_number);
+        $('#viewLocalNumber').text(rowData.local_number);
+        $('#viewEmail').text(rowData.email_address);
+        $('#viewAssetTag').text(rowData.asset_tag_number);
+        $('#viewBrandUnit').text(rowData.brand_unit);
+        $('#viewChargerOption').text(rowData.charger_option);
+        $('#viewDateLoggedIn').text(rowData.date_logged_in);
+
+        const dateLoggedOut = rowData.date_logged_out;
+        if (dateLoggedOut && dateLoggedOut !== 'Pending') {
+            $('#viewDateLoggedOut').text(dateLoggedOut);
+            $('#logOutUser').hide(); // Hide the "Log Out User" button if the user is logged out
+        } else {
+            $('#viewDateLoggedOut').text('N/A');
+            $('#logOutUser').show(); // Show the "Log Out User" button if the user is not logged out
+        }
+
+        // Open the modal
+        $('#viewUserModal').modal('show');
+
+        // Store the id for log out functionality
+        const userId = $(this).data('id');
+
+        // Handle the Log Out button click inside the modal
+        $('#logOutUser').off('click').on('click', function() {
+            if (confirm('Are you sure you want to log out this user?')) {
+                // Perform the log out action using AJAX
+                $.ajax({
+                    url: 'logout.php',
+                    method: 'POST',
+                    data: { id: userId },
+                    success: function(response) {
+                        alert(response); // Display response from logout.php
+                        window.location.reload(); // Reload the page to update the table
+                    },
+                    error: function() {
+                        alert('Error logging out user.');
+                    }
+                });
+            }
+        });
+    });
+
+    // Ensure scrolling is restored after the modal is hidden
+    $('#viewUserModal').on('hidden.bs.modal', function () {
+        // Force removal of modal-open class and ensure proper scroll
+        $('body').removeClass('modal-open').css('overflow', 'auto').css('padding-right', ''); 
+        // Clean any modal backdrop left
+        $('.modal-backdrop').remove();
     });
 
     // Show the "Check Records" modal
-    document.getElementById("checkRecordsBtn").addEventListener("click", function() {
+    $('#checkRecordsBtn').on('click', function() {
         $('#checkRecordsModal').modal('show');
-        });
     });
+});
     </script>
+
 </body>
 </html>

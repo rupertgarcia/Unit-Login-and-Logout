@@ -151,15 +151,15 @@ textarea {
 
 /* Adjust the right panel */
 .right-panel {
-    width: 40%;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
+    width: 40%; /* Adjust width to occupy 40% of the space */
+    background-color: transparent; /* Semi-transparent background */
     border-radius: 12px;
-    margin-left: 20px;
+    margin-left: 20px; /* Add some space between the form and table */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     max-height: 555px; /* Limit the panel height to the viewport */
+    outline: none; /* Remove any outline */
 }
 
 
@@ -301,7 +301,7 @@ textarea {
     background: rgb(0, 60, 14); /* Red color complementary to green */
     cursor: pointer;
     transition: 0.3s;
-    border-radius: 0 0 9px 9px; /* Top corners sharp, bottom corners curved */
+    border-radius: 9px; /* Top corners sharp, bottom corners curved */
     margin-top: auto; /* Push the button to the bottom */
 }
 
@@ -386,36 +386,98 @@ textarea {
     background-color: #1b5e20; /* Darker green on hover */
 }
 
-/* Table header styling */
+/* Make the DataTable smaller */
+#recordsTable_wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#recordsTable {
+    font-size: 14px; /* Reduce font size for table */
+}
+
 #recordsTable thead th {
-    background-color: #2e7d32; /* Dark green background for header */
-    color: white; /* White text */
-    padding: 12px;
-    font-weight: bold;
-}
-
-/* Table body styling */
-#recordsTable tbody tr {
-    background-color: #f1f8e9; /* Light green background for rows */
-}
-
-#recordsTable tbody tr:nth-child(even) {
-    background-color: #e8f5e9; /* Alternate light green for even rows */
+    padding: 6px; /* Reduce padding for table headers */
+    font-size: 15px; /* Reduce header font size */
+    color: rgba(255, 255, 255, 0.91);
+    background-color: #024e16;
 }
 
 #recordsTable tbody td {
-    padding: 10px;
+    padding: 6px; /* Reduce padding for table cells */
+    font-size: 14px;
 }
 
-/* Adjust modal size */
+/* Ensure modal and table fit within the browser window */
 .modal-lg {
-    max-width: 90%; /* Adjust the modal size to 90% of the viewport */
+    max-width: 95%; /* Slightly larger than default to fit the screen */
 }
 
-/* Responsive table styling */
+.modal-body {
+    max-height: calc(87vh - 137px); /* Limit modal height to viewport minus some padding */
+    overflow-y: auto; /* Enable scrolling within the modal if content exceeds height */
+}
+
+/* Adjust the DataTable buttons to take up less space */
+.dt-buttons .dt-button {
+    padding: 4px 8px; /* Reduce padding inside buttons */
+    font-size: 16px;  /* Smaller font for buttons */
+}
+
+/* Additional adjustments for responsive design */
 @media (max-width: 768px) {
+    #recordsTable {
+        font-size: 16px; /* Even smaller font on small screens */
+    }
+
+    #recordsTable thead th, 
+    #recordsTable tbody td {
+        padding: 4px; /* Smaller padding for small screens */
+    }
+
     .modal-lg {
         max-width: 100%; /* Full width on smaller screens */
     }
 }
 
+
+/* Styling for Pending and Ongoing counters */
+.summary-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #e8f5e9; /* Light green background */
+    border: 1px solid #2e7d32; /* Dark green border */
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 20px; /* Space below the summary */
+    font-size: 30px; /* Set the font size to 30px */
+    font-weight: bold; /* Make the text bold */
+    color: #2e7d32; /* Dark green text */
+}
+
+.summary-container p {
+    margin: 0; /* Remove default margin */
+    padding: 10px; /* Add some padding for better spacing */
+    flex: 1;
+    text-align: center; /* Center align the text */
+}
+
+.summary-container p span {
+    color: #1b5e20; /* Darker green color for the numbers */
+}
+
+
+#logOutUser {
+    background-color: #dc3545; /* Bootstrap red */
+    color: white; /* White text */
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+#logOutUser:hover {
+    background-color: #c82333; /* Darker red on hover */
+}

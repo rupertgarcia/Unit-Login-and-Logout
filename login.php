@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
     $stmt = $conn->prepare($sql);
 
     // Bind the parameters to the query
-    $stmt->bind_param("sissssssssi", $requestorName, $idNumber, $localNumber, $email, $assetTag, $brandUnit, $chargerOption, $purposeUnit, $dateLoggedIn, $dateLoggedOut, $isLoggedOut);
+    $stmt->bind_param("ssssssssssi", $requestorName, $idNumber, $localNumber, $email, $assetTag, $brandUnit, $chargerOption, $purposeUnit, $dateLoggedIn, $dateLoggedOut, $isLoggedOut);
 
     // Execute the statement
     if ($stmt->execute()) {
