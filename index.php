@@ -149,8 +149,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> <!-- vfs_fonts for PDF export -->
 
     <script>
-    // Function to update the Pending, Ongoing, and Done counters
-    function updateCounters() {
+    // Function to update the Pending, Ongoing, and Done counters and the unit table
+    function updateStatusAndTable() {
         $.ajax({
             url: 'get_unit_counts.php',
             method: 'GET',
@@ -161,16 +161,30 @@
                 $('#doneCount').text(counts.done);
             }
         });
+
+        $.ajax({
+            url: 'get_logged_in_units.php', // This PHP file will fetch currently logged-in units
+            method: 'GET',
+            success: function(data) {
+                const units = JSON.parse(data);
+                let tableRows = '';
+                units.forEach(unit => {
+                    tableRows += `<tr>
+                        <td>${unit.requestor_name}</td>
+                        <td>${unit.id_number}</td>
+                        <td>${unit.brand_unit}</td>
+                        <td>${unit.date_logged_in}</td>
+                        <td>${unit.unit_status}</td>
+                    </tr>`;
+                });
+                $('#unitLogOutTableBody').html(tableRows);
+            }
+        });
     }
 
-    // Call updateCounters every 10 seconds to refresh the counts
-    setInterval(function() {
-        updateCounters();
-    }, 10000); // 10000 ms = 10 seconds
-
-    // Initial data load for counters
-    updateCounters();
-
+    // Call updateStatusAndTable every 10 seconds
+    setInterval(updateStatusAndTable, 10000);
+    updateStatusAndTable(); // Initial call to load data on page load
     </script>
 
 </body>

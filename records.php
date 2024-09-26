@@ -106,50 +106,85 @@
     <script>
     $(document).ready(function() {
         // Initialize DataTable
-        $('#recordsTable').DataTable();
+        let table = $('#recordsTable').DataTable();
+
+        // Function to update the DataTable
+        function updateTable() {
+            $.ajax({
+                url: 'get_log_entries.php', // PHP file that returns all log entries in JSON format
+                method: 'GET',
+                success: function(data) {
+                    const logs = JSON.parse(data);
+                    table.clear(); // Clear existing table data
+
+                    // Populate table with new data
+                    logs.forEach(log => {
+                        const loggedOut = log.date_logged_out ? log.date_logged_out : 'Not Yet Logged Out';
+                        table.row.add([
+                            log.requestor_name,
+                            log.id_number,
+                            log.local_number,
+                            log.email_address,
+                            log.purpose_of_borrowing,
+                            log.asset_tag_number,
+                            log.brand_unit,
+                            log.charger_option,
+                            log.date_logged_in,
+                            loggedOut,
+                            `<select class='status-dropdown' data-id='${log.id}'>
+                                <option value='Pending' ${log.unit_status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value='Ongoing' ${log.unit_status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
+                                <option value='Done' ${log.unit_status === 'Done' ? 'selected' : ''}>Done</option>
+                            </select>`,
+                            `<button class='btn btn-danger log-out-btn' data-id='${log.id}'>Log Out</button>`
+                        ]).draw(false); // Redraw table with new data
+                    });
+                },
+                error: function() {
+                    alert('Error fetching log entries.');
+                }
+            });
+        }
+
+        // Poll the server every 10 seconds for new log entries
+        setInterval(updateTable, 10000);
+        updateTable(); // Initial load when the page loads
 
         // Handle the change event for the status dropdown
         $(document).on('change', '.status-dropdown', function() {
-            const selectedStatus = $(this).val(); // Get the selected status
-            const userId = $(this).data('id'); // Get the ID of the record
+            const selectedStatus = $(this).val();
+            const userId = $(this).data('id');
 
-            // Confirm status change
             if (confirm(`Are you sure you want to change the status to "${selectedStatus}"?`)) {
-                // Perform the status update using AJAX
                 $.ajax({
-                    url: 'update_status.php', // Update this URL to your PHP file that handles the status update
+                    url: 'update_status.php', // Update status in the database
                     method: 'POST',
-                    data: {
-                        id: userId,
-                        status: selectedStatus
-                    },
+                    data: { id: userId, status: selectedStatus },
                     success: function(response) {
-                        alert(response); // Display response from update_status.php
-                        window.location.reload(); // Reload the page to reflect the updated status
+                        alert(response);
+                        updateTable(); // Refresh the table after status change
                     },
                     error: function() {
                         alert('Error updating status.');
                     }
                 });
             } else {
-                // Reset the dropdown to the previous value if the user cancels
-                $(this).val($(this).data('original-value'));
+                $(this).val($(this).data('original-value')); // Reset the dropdown if the user cancels
             }
         });
 
         // Handle Log Out button click
         $(document).on('click', '.log-out-btn', function() {
-            const userId = $(this).data('id'); // Get the ID of the record
+            const userId = $(this).data('id');
 
             if (confirm('Are you sure you want to log out this user?')) {
-                // Perform the log out action using AJAX
                 $.ajax({
-                    url: 'logout.php', // Update this URL to your PHP file that handles the log out
+                    url: 'logout.php',
                     method: 'POST',
                     data: { id: userId },
                     success: function(response) {
-                        alert(response); // Display response from logout.php
-                        window.location.reload(); // Reload the page to update the table
+                        alert(response);
+                        updateTable(); // Refresh the table after log out
                     },
                     error: function() {
                         alert('Error logging out user.');
