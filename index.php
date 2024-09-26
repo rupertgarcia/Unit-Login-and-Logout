@@ -98,7 +98,7 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="unitLogOutTableBody">
                         <?php
                         include 'connect.php';
 
@@ -149,8 +149,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> <!-- vfs_fonts for PDF export -->
 
     <script>
-    // Function to update the Pending, Ongoing, and Done counters and the unit table
     function updateStatusAndTable() {
+        // Update counters
         $.ajax({
             url: 'get_unit_counts.php',
             method: 'GET',
@@ -162,6 +162,7 @@
             }
         });
 
+        // Update table
         $.ajax({
             url: 'get_logged_in_units.php', // This PHP file will fetch currently logged-in units
             method: 'GET',
@@ -177,6 +178,7 @@
                         <td>${unit.unit_status}</td>
                     </tr>`;
                 });
+                // Update the table body with the new rows
                 $('#unitLogOutTableBody').html(tableRows);
             }
         });

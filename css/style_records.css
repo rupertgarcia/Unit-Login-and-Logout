@@ -10,22 +10,21 @@ html, body {
 
 /* CONTAINER AND LAYOUT */
 .container-wrapper {
-    width: 100%; /* Full-width of the available screen */
-    max-width: 1500px; /* Set a fixed max-width for large screens */
-    height: 800px; /* Set a fixed height for the container */
+    width: 100%; /* Full width for any screen */
+    max-width: 1500px; /* Set a max-width for large screens */
+    height: 800px; /* Fixed height */
     margin: 0 auto; /* Center the container */
-    padding: 0; /* Remove padding */
-    overflow: hidden; /* Hide any overflow to keep it the same size */
+    padding: 0; /* No padding */
+    overflow: hidden; /* Keep it from overflowing */
 }
 
-/* Center and style the table container */
 .table-container {
     width: 100%;
-    height: 100%; /* Full height of the container */
-    max-width: 1500px; /* Fixed maximum width */
-    max-height: 800px; /* Fixed maximum height */
-    margin: 0 auto; /* Center the table */
-    overflow: auto; /* Enable scrolling if content exceeds size */
+    height: 100%;
+    max-width: 1500px;
+    max-height: 800px;
+    margin: 0 auto;
+    overflow: auto;
     padding: 0;
 }
 
@@ -34,68 +33,68 @@ html, body {
     text-align: center;
     padding: 10px;
     margin: 0;
-    background-color: #024e16; /* Dark green background */
-    color: white; /* White text */
-    font-size: 1.5rem; /* Larger font size for the header */
-    border-radius: 8px 8px 0 0; /* Rounded top corners */
+    background-color: #024e16; /* Dark green */
+    color: white;
+    font-size: 1.5rem;
+    border-radius: 8px 8px 0 0;
 }
 
 /* DATA TABLE STYLING */
 #recordsTable {
-    width: 100%; /* Full width of the container */
-    max-width: 1500px; /* Fixed maximum width */
-    height: 100%; /* Full height */
-    margin: 0 auto; /* Center the table */
-    table-layout: fixed; /* Keep columns the same size */
-    border-collapse: collapse; /* Ensure cells fit neatly */
+    width: 100%;
+    max-width: 1500px;
+    height: 100%;
+    margin: 0 auto;
+    table-layout: fixed; /* Keep columns uniform */
+    border-collapse: collapse; /* Neatly fit cells */
 }
 
 /* Alternating row colors */
 #recordsTable tbody tr:nth-child(odd) {
-    background-color: #f0f0f0; /* Light gray for odd rows */
+    background-color: #f0f0f0;
 }
 
 #recordsTable tbody tr:nth-child(even) {
-    background-color: #ffffff; /* White for even rows */
+    background-color: #ffffff;
 }
 
 /* Table header styling */
 #recordsTable_wrapper {
-    width: 100%; /* Full width of the parent container */
-    max-width: 1500px; /* Fixed maximum width */
-    margin: 0 auto; /* Center the DataTable */
-    height: 100%; /* Full height */
-    overflow: auto; /* Add scrolling to keep height fixed */
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    height: 100%;
+    overflow: auto;
 }
 
 /* Table Header and Cell Styling */
-#recordsTable thead th, 
+#recordsTable thead th,
 #recordsTable tbody td {
-    padding: 6px; /* Padding for cells */
-    text-align: center; /* Center-align the header and cell content */
-    vertical-align: middle; /* Vertically center the text */
-    white-space: normal; /* Allow text to wrap */
-    word-wrap: break-word; /* Break long words if necessary */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis (...) for overflowed text */
+    padding: 6px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Sticky Header Styling */
+/* Sticky Header */
 #recordsTable thead th {
-    background-color: #3c9454; /* Green background for headers */
-    color: white; /* White text for header */
-    font-size: 15px; /* Font size for header */
-    font-weight: bold; /* Bold header text */
-    position: sticky; /* Sticky header */
-    top: 0; /* Stick the header to the top */
-    z-index: 2; /* Ensure header stays above content when scrolling */
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Add shadow for header */
+    background-color: #3c9454;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
 /* Cell Styling */
 #recordsTable tbody td {
-    padding: 6px; /* Padding for table cells */
-    font-size: 14px; /* Font size for table cells */
+    padding: 6px;
+    font-size: 14px;
 }
 
 /* Search Bar Styling */
@@ -105,9 +104,9 @@ html, body {
 }
 
 .dataTables_filter label {
-    font-size: 16px; /* Adjust label size */
-    color: #024e16; /* Dark green text */
-    font-weight: bold; /* Bold label text */
+    font-size: 16px;
+    color: #024e16;
+    font-weight: bold;
 }
 
 .dataTables_wrapper .dataTables_filter input {
@@ -119,71 +118,42 @@ html, body {
 }
 
 .dataTables_filter input {
-    border: 2px solid #388e3c; /* Green border */
-    border-radius: 5px; /* Rounded corners */
+    border: 2px solid #388e3c;
+    border-radius: 5px;
     padding: 5px;
     font-size: 14px;
     color: #024e16;
-    background-color: #f0eded; /* Light gray background for input box */
-    width: 250px; /* Wider search box */
-    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus state */
+    background-color: #f0eded;
+    width: 250px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .dataTables_filter input:focus {
     outline: none;
-    background-color: #d5d5d5; /* Darker gray background on focus */
-    border-color: #1b5e20; /* Darker green on focus */
-    box-shadow: 0 0 5px rgba(27, 94, 32, 0.8); /* Subtle shadow on focus */
+    background-color: #d5d5d5;
+    border-color: #1b5e20;
+    box-shadow: 0 0 5px rgba(27, 94, 32, 0.8);
 }
 
 .dataTables_wrapper {
-    overflow: visible !important; /* Ensure content isn't cut off */
+    overflow: visible !important;
 }
-
 
 /* BUTTON STYLING */
 .dt-buttons .dt-button {
-    background-color: #388e3c; /* Green buttons */
-    color: white; /* White text for buttons */
-    border: none; /* Remove border */
-    padding: 6px 10px; /* Padding for buttons */
-    margin: 5px; /* Margin around buttons */
-    border-radius: 5px; /* Rounded corners for buttons */
+    background-color: #388e3c;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    margin: 5px;
+    border-radius: 5px;
 }
 
-/* Button Hover Effect */
 .dt-buttons .dt-button:hover {
-    background-color: #1b5e20; /* Darker green on hover */
+    background-color: #1b5e20;
 }
 
-/* RESPONSIVE STYLING */
-@media (max-width: 768px) {
-    /* Make the DataTable wrapper full width on smaller screens */
-    #recordsTable_wrapper {
-        width: 100%;
-    }
-
-    /* Allow wrapping on small screens */
-    #recordsTable thead th, 
-    #recordsTable tbody td {
-        white-space: normal; /* Allow wrapping */
-        word-wrap: break-word; /* Break long words */
-    }
-}
-
-/* MARGIN AND SPACING */
-.mt-5, .my-5 {
-    margin-top: 1.5rem !important;
-    margin-bottom: 1rem;
-}
-
-/* ADJUST CONTAINER FOR LARGER SCREENS */
-@media (min-width: 992px) {
-    .container, .container-lg, .container-md, .container-sm {
-        max-width: 1400px; /* Fixed width for larger screens */
-    }
-}
-
+/* Pagination Buttons */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     box-sizing: border-box;
     display: inline-block;
@@ -196,4 +166,98 @@ html, body {
     color: #333 !important;
     border: 1px solid transparent;
     border-radius: 2px;
+}
+
+/* RESPONSIVE MEDIA QUERIES */
+@media (max-width: 1200px) {
+    .container-wrapper {
+        height: auto; /* Adjust height for smaller screens */
+        max-width: 90%; /* Adjust container width */
+        overflow: auto;
+    }
+
+    .table-container {
+        max-width: 90%; /* Reduce table width on smaller screens */
+        overflow: auto;
+    }
+
+    #recordsTable {
+        max-width: 100%;
+    }
+
+    #recordsTable_wrapper {
+        max-width: 100%;
+    }
+
+    .dataTables_filter input {
+        width: 100%; /* Full-width search bar on smaller screens */
+    }
+
+    .dt-buttons .dt-button {
+        width: 100%; /* Full-width buttons */
+    }
+}
+
+@media (max-width: 768px) {
+    .container-wrapper {
+        height: auto;
+        max-width: 100%;
+        padding: 10px; /* Add some padding for small screens */
+    }
+
+    .table-container {
+        max-width: 100%;
+        overflow: auto;
+    }
+
+    #recordsTable {
+        max-width: 100%;
+    }
+
+    #recordsTable_wrapper {
+        max-width: 100%;
+    }
+
+    /* Adjust search bar and buttons */
+    .dataTables_filter input {
+        width: 100%;
+    }
+
+    .dt-buttons .dt-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-wrapper {
+        padding: 0 10px;
+    }
+
+    .table-container {
+        padding: 0;
+        max-width: 100%;
+        overflow: scroll;
+    }
+
+    #recordsTable {
+        max-width: 100%;
+    }
+
+    #recordsTable_wrapper {
+        max-width: 100%;
+    }
+}
+
+/* General Margin Adjustments */
+.mt-5, .my-5 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1rem;
+}
+
+/* ADJUST CONTAINER FOR LARGER SCREENS */
+@media (min-width: 992px) {
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 1400px;
+    }
 }
