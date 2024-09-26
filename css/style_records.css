@@ -1,121 +1,199 @@
-/* Header for the table */
+/* RESET STYLES */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #c9ffdc;
+}
+
+/* CONTAINER AND LAYOUT */
+.container-wrapper {
+    width: 100%; /* Full-width of the available screen */
+    max-width: 1500px; /* Set a fixed max-width for large screens */
+    height: 800px; /* Set a fixed height for the container */
+    margin: 0 auto; /* Center the container */
+    padding: 0; /* Remove padding */
+    overflow: hidden; /* Hide any overflow to keep it the same size */
+}
+
+/* Center and style the table container */
+.table-container {
+    width: 100%;
+    height: 100%; /* Full height of the container */
+    max-width: 1500px; /* Fixed maximum width */
+    max-height: 800px; /* Fixed maximum height */
+    margin: 0 auto; /* Center the table */
+    overflow: auto; /* Enable scrolling if content exceeds size */
+    padding: 0;
+}
+
+/* HEADER STYLING */
 .right-panel h2 {
     text-align: center;
     padding: 10px;
     margin: 0;
-    background-color: #024e16; /* Use a greenish background */
+    background-color: #024e16; /* Dark green background */
     color: white; /* White text */
-    font-size: 1.5rem; /* Slightly larger font size */
+    font-size: 1.5rem; /* Larger font size for the header */
     border-radius: 8px 8px 0 0; /* Rounded top corners */
 }
 
-/* Center the DataTable */
-.container-wrapper {
-    display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: flex-start;
-    margin: none;
-    max-width: 1200px; /* Set a max width for the content */
-    height: auto;
-}
-
-/* Table container should be centered */
-.table-container {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Center the table */
-    padding: 10px; /* Add some padding */
-}
-
-/* Table styles */
-.right-panel table {
-    width: auto; /* Allow the table width to adjust automatically */
-    border-collapse: collapse;
-}
-
-/* Prevent text wrapping in table headers and cells */
-.right-panel table th, 
-.right-panel table td {
-    padding: 10px;
-    text-align: left;
-    white-space: nowrap; /* Prevent wrapping */
-}
-
-/* Prevent text wrapping in table headers */
-.right-panel table th {
-    background-color: #3c9454;
-    color: white;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    padding: 10px;
-    white-space: nowrap; /* Keep headers from wrapping */
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-}
-
-/* Allow text wrapping in table cells with a max of 2 lines */
-.right-panel table td {
-    padding: 10px;
-    text-align: left;
-    white-space: normal; /* Allow text wrapping */
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limit to 2 lines */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis for overflow */
-    max-height: 2.8em; /* Adjust height to fit 2 lines properly (1.4em per line) */
-    line-height: 1.4em;
-}
-
-/* DataTable styling */
-#recordsTable_wrapper {
-    width: 95%; /* Wider table */
-    margin: 0 auto; /* Center the DataTable */
-    color: #333;
-}
-
-/* Additional styling for DataTable buttons */
-.dt-buttons .dt-button {
-    background-color: #388e3c;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    margin: 5px;
-    border-radius: 5px;
-}
-
-.dt-buttons .dt-button:hover {
-    background-color: #1b5e20;
-}
-
+/* DATA TABLE STYLING */
 #recordsTable {
-    width: 100%;
-    margin: 0 auto;
-    table-layout: auto;
+    width: 100%; /* Full width of the container */
+    max-width: 1500px; /* Fixed maximum width */
+    height: 100%; /* Full height */
+    margin: 0 auto; /* Center the table */
+    table-layout: fixed; /* Keep columns the same size */
+    border-collapse: collapse; /* Ensure cells fit neatly */
 }
 
-#recordsTable thead th {
-    padding: 6px;
-    font-size: 15px;
-    background-color: #024e16;
-    color: rgba(255, 255, 255, 0.91);
+/* Alternating row colors */
+#recordsTable tbody tr:nth-child(odd) {
+    background-color: #f0f0f0; /* Light gray for odd rows */
 }
 
+#recordsTable tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+}
+
+/* Table header styling */
+#recordsTable_wrapper {
+    width: 100%; /* Full width of the parent container */
+    max-width: 1500px; /* Fixed maximum width */
+    margin: 0 auto; /* Center the DataTable */
+    height: 100%; /* Full height */
+    overflow: auto; /* Add scrolling to keep height fixed */
+}
+
+/* Table Header and Cell Styling */
+#recordsTable thead th, 
 #recordsTable tbody td {
-    padding: 6px;
-    font-size: 14px;
+    padding: 6px; /* Padding for cells */
+    text-align: center; /* Center-align the header and cell content */
+    vertical-align: middle; /* Vertically center the text */
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words if necessary */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis (...) for overflowed text */
 }
 
-/* Responsive design for smaller screens */
+/* Sticky Header Styling */
+#recordsTable thead th {
+    background-color: #3c9454; /* Green background for headers */
+    color: white; /* White text for header */
+    font-size: 15px; /* Font size for header */
+    font-weight: bold; /* Bold header text */
+    position: sticky; /* Sticky header */
+    top: 0; /* Stick the header to the top */
+    z-index: 2; /* Ensure header stays above content when scrolling */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Add shadow for header */
+}
+
+/* Cell Styling */
+#recordsTable tbody td {
+    padding: 6px; /* Padding for table cells */
+    font-size: 14px; /* Font size for table cells */
+}
+
+/* Search Bar Styling */
+.dataTables_filter {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.dataTables_filter label {
+    font-size: 16px; /* Adjust label size */
+    color: #024e16; /* Dark green text */
+    font-weight: bold; /* Bold label text */
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: #e0e0e0;
+    margin-left: 3px;
+}
+
+.dataTables_filter input {
+    border: 2px solid #388e3c; /* Green border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px;
+    font-size: 14px;
+    color: #024e16;
+    background-color: #f0eded; /* Light gray background for input box */
+    width: 250px; /* Wider search box */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus state */
+}
+
+.dataTables_filter input:focus {
+    outline: none;
+    background-color: #d5d5d5; /* Darker gray background on focus */
+    border-color: #1b5e20; /* Darker green on focus */
+    box-shadow: 0 0 5px rgba(27, 94, 32, 0.8); /* Subtle shadow on focus */
+}
+
+.dataTables_wrapper {
+    overflow: visible !important; /* Ensure content isn't cut off */
+}
+
+
+/* BUTTON STYLING */
+.dt-buttons .dt-button {
+    background-color: #388e3c; /* Green buttons */
+    color: white; /* White text for buttons */
+    border: none; /* Remove border */
+    padding: 6px 10px; /* Padding for buttons */
+    margin: 5px; /* Margin around buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
+}
+
+/* Button Hover Effect */
+.dt-buttons .dt-button:hover {
+    background-color: #1b5e20; /* Darker green on hover */
+}
+
+/* RESPONSIVE STYLING */
 @media (max-width: 768px) {
+    /* Make the DataTable wrapper full width on smaller screens */
     #recordsTable_wrapper {
         width: 100%;
     }
 
-    #recordsTable thead th,
+    /* Allow wrapping on small screens */
+    #recordsTable thead th, 
     #recordsTable tbody td {
-        white-space: normal; /* Allow wrapping on smaller screens */
-        -webkit-line-clamp: 3; /* Slightly increase to 3 lines for smaller screens */
+        white-space: normal; /* Allow wrapping */
+        word-wrap: break-word; /* Break long words */
     }
+}
+
+/* MARGIN AND SPACING */
+.mt-5, .my-5 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1rem;
+}
+
+/* ADJUST CONTAINER FOR LARGER SCREENS */
+@media (min-width: 992px) {
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 1400px; /* Fixed width for larger screens */
+    }
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: .5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    color: #333 !important;
+    border: 1px solid transparent;
+    border-radius: 2px;
 }
