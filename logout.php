@@ -11,7 +11,7 @@ if (isset($_POST['id'])) {
 
     // Prepare the SQL query to update the record
     $sql = "UPDATE UnitLogInForm 
-            SET date_logged_out = ?, status = ? 
+            SET date_logged_out = ?, unit_status = ? 
             WHERE id = ?";
 
     // Prepare the statement
