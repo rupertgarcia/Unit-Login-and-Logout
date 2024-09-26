@@ -93,9 +93,9 @@
                         <tr>
                             <th>Name</th>
                             <th>ID #</th>
-                            <th>Brand Unit</th>
+                            <th>Brand</th>
                             <th>Logged In</th>
-                            <th>Status</th> <!-- Added Status column -->
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>

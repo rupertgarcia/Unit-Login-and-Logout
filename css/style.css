@@ -149,93 +149,6 @@ textarea {
     }
 }
 
-/* Adjust the right panel */
-.right-panel {
-    width: 40%; /* Adjust width to occupy 40% of the space */
-    background-color: transparent; /* Semi-transparent background */
-    border-radius: 12px;
-    margin-left: 20px; /* Add some space between the form and table */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    max-height: 555px; /* Limit the panel height to the viewport */
-    outline: none; /* Remove any outline */
-}
-
-
-/* Header for the table */
-.right-panel h2 {
-    text-align: center;
-    padding: 10px;
-    margin: 0;
-    background-color: #024e16; /* Use a greenish background */
-    color: white; /* White text */
-    font-size: 1.5rem; /* Slightly larger font size */
-    border-radius: 8px 8px 0 0; /* Rounded top corners to match the panel */
-}
-
-/* Table container with scrolling */
-.table-container {
-    flex: 1; /* Allow the table to take up the remaining height */
-    overflow-y: auto; /* Enable vertical scrolling */
-    max-height: 100%; /* Ensure the table container respects the right-panel height */
-}
-
-/* Table styles */
-.right-panel table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-/* Fix the sticky header */
-.right-panel table th, .right-panel table td {
-    padding: 10px;
-    text-align: left;
-}
-
-.right-panel table th {
-    background-color: #3c9454; /* Match the header background color */
-    color: white; /* White text */
-    font-weight: bold;
-    position: sticky; /* Sticky header */
-    top: 0; /* Stick the header at the top */
-    z-index: 2; /* Ensure header stays on top when scrolling */
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Add shadow for a clean division */
-}
-
-/* Adjust row hover effect */
-.right-panel table tr:hover {
-    background-color: #e6f5eb; /* Light green hover effect */
-}
-
-/* Highlight the selected row with pale green */
-.right-panel table tr.selected {
-    background-color: #d1e7dd !important; /* Pale green background for selected row */
-}
-
-/* Style for the Log Out button */
-#logoutBtn {
-    font-size: 1.1rem;
-    padding: 8px 0;
-    border: none;
-    width: 100%;
-    background: rgb(220, 53, 69); /* Red color complementary to green */
-    cursor: pointer;
-    transition: 0.3s;
-    border-radius: 0 0 0 0; /* Top corners sharp, bottom corners curved */
-    margin-top: auto; /* Push the button to the bottom */
-}
-
-
-.btn.disabled {
-    background-color: gray; /* Gray background when disabled */
-    cursor: not-allowed; /* Not allowed cursor */
-}
-
-.btn.enabled {
-    background-color: rgb(220, 53, 69); /* Red background when enabled */
-}
-
 .bottom-right-image {
     position: fixed;
     bottom: 10px;
@@ -293,191 +206,151 @@ textarea {
     margin-left: 15px; /* Space between the label and the radio button */
 }
 
-#checkRecordsBtn {
-    font-size: 1.1rem;
-    padding: 8px 0;
-    border: none;
-    width: 100%;
-    background: rgb(0, 60, 14); /* Red color complementary to green */
-    cursor: pointer;
-    transition: 0.3s;
-    border-radius: 9px; /* Top corners sharp, bottom corners curved */
-    margin-top: auto; /* Push the button to the bottom */
-}
-
-/* Modal styling with green color palette */
-.modal-content {
-    border-radius: 15px; /* Rounded corners */
-    background-color: #e8f5e9; /* Light green background */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
-}
-
-.modal-header {
-    background-color: #1b5e20; /* Dark green header */
-    color: white; /* White text for header */
-    border-top-left-radius: 15px; /* Match the rounded corners */
-    border-top-right-radius: 15px;
-    padding: 15px;
-    text-align: center;
-}
-
-.modal-title {
-    font-size: 1.75rem; /* Larger title font size */
+/* Styling for the Status title */
+.right-panel h2#statusTitle {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #024e16;
     text-align: center;
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px; /* Reduced margin for closer spacing */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.modal-body {
-    background-color: #f1f8e9; /* Slightly lighter green body */
-    padding: 30px; /* More padding for a spacious look */
+/* Styling for the Currently Logged In Units title */
+.right-panel h2#loggedInUnitsTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #024e16;
+    text-align: center;
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px; /* Reduced margin for closer spacing */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Remove the background color and border-radius for the modal footer */
-.modal-footer {
-    background-color: transparent; /* Remove background color */
-    border-top: none; /* Remove any top border */
-    padding: 15px; /* Keep some padding for button spacing */
-    text-align: right; /* Align buttons to the right */
-}
-
-/* Button styling inside the footer */
-.modal-footer .btn {
-    background-color: #388e3c; /* Green button background */
-    color: white; /* White text */
-    padding: 10px 20px;
-    margin-left: 10px;
-    border-radius: 5px;
-    border: none;
-    transition: background-color 0.3s ease;
-}
-
-/* Button hover effect */
-.modal-footer .btn:hover {
-    background-color: #1b5e20; /* Darker green on hover */
-}
-
-
-/* DataTable wrapper */
-#recordsTable_wrapper {
-    width: 100%; /* Full width */
-    margin: 0 auto;
-    color: #333; /* Text color */
-}
-
-/* Header styling for DataTables */
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter,
-.dataTables_wrapper .dataTables_info {
-    color: #2e7d32; /* Darker green text for table controls */
-}
-
-/* DataTable buttons */
-.dt-buttons .dt-button {
-    background-color: #388e3c; /* Green buttons */
-    color: white; /* White text */
-    border: none;
-    padding: 8px 12px;
-    margin: 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.dt-buttons .dt-button:hover {
-    background-color: #1b5e20; /* Darker green on hover */
-}
-
-/* Make the DataTable smaller */
-#recordsTable_wrapper {
-    width: 100%;
-    margin: 0 auto;
-}
-
-#recordsTable {
-    font-size: 14px; /* Reduce font size for table */
-}
-
-#recordsTable thead th {
-    padding: 6px; /* Reduce padding for table headers */
-    font-size: 15px; /* Reduce header font size */
-    color: rgba(255, 255, 255, 0.91);
-    background-color: #024e16;
-}
-
-#recordsTable tbody td {
-    padding: 6px; /* Reduce padding for table cells */
-    font-size: 14px;
-}
-
-/* Ensure modal and table fit within the browser window */
-.modal-lg {
-    max-width: 95%; /* Slightly larger than default to fit the screen */
-}
-
-.modal-body {
-    max-height: calc(87vh - 137px); /* Limit modal height to viewport minus some padding */
-    overflow-y: auto; /* Enable scrolling within the modal if content exceeds height */
-}
-
-/* Adjust the DataTable buttons to take up less space */
-.dt-buttons .dt-button {
-    padding: 4px 8px; /* Reduce padding inside buttons */
-    font-size: 16px;  /* Smaller font for buttons */
-}
-
-/* Additional adjustments for responsive design */
-@media (max-width: 768px) {
-    #recordsTable {
-        font-size: 16px; /* Even smaller font on small screens */
-    }
-
-    #recordsTable thead th, 
-    #recordsTable tbody td {
-        padding: 4px; /* Smaller padding for small screens */
-    }
-
-    .modal-lg {
-        max-width: 100%; /* Full width on smaller screens */
-    }
-}
-
-
-/* Styling for Pending and Ongoing counters */
+/* Styling for the Status counter */
 .summary-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: #e8f5e9; /* Light green background */
-    border: 1px solid #2e7d32; /* Dark green border */
-    border-radius: 0 0 10px 10px;
-    margin-bottom: 20px; /* Space below the summary */
-    font-size: 30px; /* Set the font size to 30px */
-    font-weight: bold; /* Make the text bold */
-    color: #2e7d32; /* Dark green text */
+    padding: 15px; /* Reduced padding for a more compact layout */
+    background-color: #e8f5e9;
+    border: 1px solid #2e7d32;
+    border-radius: 10px;
+    margin-bottom: 15px; /* Reduced margin for closer spacing */
+    font-size: 25px;
+    font-weight: bold;
+    color: #2e7d32;
+    text-align: center;
 }
 
 .summary-container p {
     margin: 0; /* Remove default margin */
     padding: 10px; /* Add some padding for better spacing */
     flex: 1;
-    text-align: center; /* Center align the text */
 }
 
 .summary-container p span {
+    display: inline-block;
+    width: 100px; /* Set equal width for each counter */
     color: #1b5e20; /* Darker green color for the numbers */
 }
 
-
-#logOutUser {
-    background-color: #dc3545; /* Bootstrap red */
-    color: white; /* White text */
-    padding: 10px 20px;
-    margin-left: 10px;
-    border-radius: 5px;
-    border: none;
-    transition: background-color 0.3s ease;
+/* Adjust the right panel */
+.right-panel {
+    width: 40%;
+    background-color: #f5f5f5; /* Light gray background for the table container */
+    border-radius: 12px;
+    margin-left: 20px; /* Add space between the form and table */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 555px;
+    outline: none;
+    padding: 10px; /* Add some padding */
 }
 
-#logOutUser:hover {
-    background-color: #c82333; /* Darker red on hover */
+/* Styling for the table */
+.table-container {
+    flex: 1; /* Allow the table to take up the remaining height */
+    overflow-y: auto;
+    max-height: 100%;
+    padding: 10px; /* Add some padding around the table */
+}
+
+/* Styling for the Status and Currently Logged In Units titles */
+.right-panel h2 {
+    font-size: 1.5rem; /* Adjust the font size for better visibility */
+    font-weight: bold; /* Bold text */
+    color: #e8f5e9; /* Dark green color for the titles */
+    text-align: center; /* Center the text */
+    background-color: #024e16; /* Light green background for the header */
+    padding: 10px; /* Add some padding */
+    border-radius: 8px; /* Add rounded corners */
+    margin-bottom: 15px; /* Add spacing below the title */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.right-panel table {
+    font-size: 14px; /* Reduce the table text size by 1px */
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+/* Alternating row background color */
+.right-panel table tbody tr:nth-child(odd) {
+    background-color: #f0f0f0; /* Light gray for odd rows */
+}
+
+.right-panel table tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+}
+
+/* Styling for the table header */
+.right-panel table thead th {
+    background-color: #3c9454;
+    color: white;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    font-size: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-top: -5px; /* Pull the header closer to the title */
+}
+
+/* Alternating row background color */
+.right-panel table tbody tr:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+
+.right-panel table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Table cell styles */
+.right-panel table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 13px;
+}
+
+/* Adjust row hover effect */
+.right-panel table tr:hover {
+    background-color: #d1e7dd;
+}
+
+/* Add scroll to the table container */
+.table-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 100%;
+    padding: 0 10px 10px 10px; /* Adjusted padding */
+    margin-top: 0px; /* Removed margin to pull the table closer to the title */
 }
